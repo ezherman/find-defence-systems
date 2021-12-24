@@ -1,7 +1,7 @@
-# Snakemake workflow: find_defence_systems
+# Snakemake workflow: find-defence-systems
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.10.0-brightgreen.svg)](https://snakemake.bitbucket.io)
-[![Build Status](https://travis-ci.org/snakemake-workflows/find_defence_systems.svg?branch=master)](https://travis-ci.org/snakemake-workflows/find_defence_systems)
+[![Build Status](https://travis-ci.org/snakemake-workflows/find-defence-systems.svg?branch=master)](https://travis-ci.org/snakemake-workflows/find-defence-systems)
 
 This is the template for a new Snakemake workflow. Replace this text with a comprehensive description covering the purpose and domain.
 Insert your code into the respective folders, i.e. `scripts`, `rules`, and `envs`. Define the entry point of the workflow in the `Snakefile` and the main configuration in the `config.yaml` file.
@@ -80,7 +80,7 @@ Whenever you change something, don't forget to commit the changes back to your g
 
 Whenever you want to synchronize your workflow copy with new developments from upstream, do the following.
 
-1. Once, register the upstream repository in your local copy: `git remote add -f upstream git@github.com:snakemake-workflows/find_defence_systems.git` or `git remote add -f upstream https://github.com/snakemake-workflows/find_defence_systems.git` if you do not have setup ssh keys.
+1. Once, register the upstream repository in your local copy: `git remote add -f upstream git@github.com:snakemake-workflows/find-defence_systems.git` or `git remote add -f upstream https://github.com/snakemake-workflows/find-defence_systems.git` if you do not have setup ssh keys.
 2. Update the upstream version: `git fetch upstream`.
 3. Create a diff with the current version: `git diff HEAD upstream/master workflow > upstream-changes.diff`.
 4. Investigate the changes: `vim upstream-changes.diff`.
