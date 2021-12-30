@@ -1,9 +1,9 @@
 # Create system tables at the level of parent systems (i.e. ignoring subsystems)
-rule final_systems_spreadsheet_summary:
+rule systems_by_assembly_summarised:
     output:
-        csv_out = "data/analysis_data/system_tables_summarised/system_table_summarised_{assembly}.csv"
+        csv_out = "results/intermediate/systems_by_assembly_summarised/systems_summarised_{assembly}.csv"
     input:
-        csv_in = "data/analysis_data/system_tables/system_table_{assembly}.csv"
+        csv_in = "results/intermediate/systems_by_assembly/systems_{assembly}.csv"
     run:
 
         df = pd.read_csv(input.csv_in)
