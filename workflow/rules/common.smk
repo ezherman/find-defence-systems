@@ -90,7 +90,7 @@ def final_system_table(df_defense_finder, df_padloc = None):
 
 ## merge system tables of all assemblies
 ## also reduce data from number of hits to presence-absence
-def merge_assemblies_systems(indir):
+def systems_summarised(indir):
 
     #find whether system_tables or system_tables_summarised was provided
     indir_end = indir.split("_")[-1]
@@ -100,11 +100,11 @@ def merge_assemblies_systems(indir):
     files = glob.glob(indir + "/*.csv")
 
     # names of the assemblies
-    assemblies = [f[f.rfind(indir_end) + l:f.find('.csv')] for f in files]
+    # assemblies = [f[f.rfind(indir_end) + l:f.find('.csv')] for f in files]
 
     # concatenate all analysis output
     df = pd.concat((pd.read_csv(f) for f in files),
-                   keys = assemblies,
+                   keys = ASSEMBLIES,
                    names = ("assembly", "row"))
 
     #remove row index
@@ -112,7 +112,7 @@ def merge_assemblies_systems(indir):
 
 
     # add assemblies without defense system hits as "None"
-    no_hit_assemblies = [a for a in assemblies if a not in df.index]
+    no_hit_assemblies = [a for a in ASSEMBLIES if a not in df.index]
     new_entry = {'program': 'NA', 'system': 'none', 'protein_names': 'NA', 'protein_IDs' : 'NA'}
     for a in no_hit_assemblies:
         df.loc[a] = new_entry
