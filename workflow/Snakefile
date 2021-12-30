@@ -8,11 +8,20 @@ report: "report/workflow.rst"
 singularity: "docker://continuumio/miniconda3"
 
 
-rule all:
-    input:
-        # The first rule should define the default target files
-        # Subsequent target rules can be specified below. They should start with all_*.
+ASSEMBLIES = glob_wildcards("data/protein_seq/{assembly}.faa").assembly
 
 
+# Load helper functions
 include: "rules/common.smk"
-include: "rules/other.smk"
+
+# Load rules
+include: "rules/run_defense_finder.smk"
+include: "rules/update_padloc_db.smk"
+include: "rules/run_padloc.smk"
+include: "rules/systems_by_assembly.smk"
+include: "rules/systems_by_assembly_summarised.smk"
+include: "rules/systems_all_assemblies.smk"
+
+# Target rule
+rule all:
+    input: "results/main/systems_summarised.csv"
