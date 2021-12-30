@@ -5,9 +5,9 @@ rule run_padloc:
         csv = "results/intermediate/padloc/padloc_{assembly}/padloc_{assembly}.csv"
     input:
         faa = "data/protein_seq/{assembly}.faa",
-        gff = "data/annotations/{assembly}.gff",
+        gff = "data/annotation/{assembly}.gff",
         hmm = ".snakemake/conda/" + find_conda_env_hash("workflow/envs/padloc.yaml") + "/data/hmm"
-    conda: "workflow/envs/padloc.yaml"
+    conda: "../envs/padloc.yaml"
     shell:
         r"""touch {output.csv} #empty output file in case padloc finds no results
                                #otherwise snakemake exits due to lack of output file

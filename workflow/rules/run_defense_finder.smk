@@ -7,7 +7,7 @@ rule run_defense_finder:
         dir = directory("results/intermediate/defense_finder/defense_finder_{assembly}"),
         tsv = "results/intermediate/defense_finder/defense_finder_{assembly}/defense_finder_systems.tsv"
     input: "data/protein_seq/{assembly}.faa"
-    conda: "workflow/envs/defensefinder.yaml"
+    conda: "../envs/defensefinder.yaml"
     resources:
         n_defense_finder = 1
     shell:

@@ -90,9 +90,9 @@ def final_system_table(df_defense_finder, df_padloc = None):
 
 ## merge system tables of all assemblies
 ## also reduce data from number of hits to presence-absence
-def systems_summarised(indir):
+def systems_all_assemblies(indir):
 
-    #find whether system_tables or system_tables_summarised was provided
+    #find whether system_tables or system_tables_summarised folder was provided
     indir_end = indir.split("_")[-1]
     l = len(indir_end) + 1 #lengt + 1 for "_" sepatator ahead of assembly name
 

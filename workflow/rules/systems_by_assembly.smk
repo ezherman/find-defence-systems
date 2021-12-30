@@ -1,12 +1,12 @@
 # Create final systems spreadsheet
 # Either defense_finder only or
 # Merge systems found by defensefinder and padloc
-rule final_systems_spreadsheet:
+rule systems_by_assembly:
     output:
-        csv = "data/analysis_data/system_tables/system_table_{assembly}.csv"
+        csv = "results/intermediate/systems_by_assembly/systems_{assembly}.csv"
     input:
-        dfinder = "data/intermediate_data/defense_finder/defense_finder_{assembly}/defense_finder_systems.tsv",
-        padloc  = "data/intermediate_data/padloc/padloc_{assembly}/{assembly}_padloc.csv"
+        dfinder = "results/intermediate/defense_finder/defense_finder_{assembly}/defense_finder_systems.tsv",
+        padloc  = "results/intermediate/padloc/padloc_{assembly}/padloc_{assembly}.csv"
     run:
 
         # if padloc found hits
