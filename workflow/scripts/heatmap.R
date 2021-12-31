@@ -6,14 +6,19 @@ suppressPackageStartupMessages(library(ComplexHeatmap))
 
 #load data
 dat <- read_csv(snakemake@input[[1]])
+samples <- read.table(file = snakemake@params[["samples"]],
+                      sep = '\t', header = TRUE)
+dat <- dat %>%
+  left_join(samples)
 
 # create matrix for plotting
 mat <- dat %>%
-  select(-c(assembly)) %>%
+  select(-c(sample, group)) %>%
   as.matrix()
 
+
 # set matrix row names
-rownames(mat) <- dat$assembly
+rownames(mat) <- dat$sample
 
 # colors for the plot
 col_fun = colorRamp2(c(0, 1), c("lightblue", "red"))
@@ -36,14 +41,14 @@ hm <- mat %>%
           column_title_side = "bottom",
           cluster_rows = FALSE, cluster_columns = TRUE,
           show_row_names = TRUE, show_column_dend = FALSE,
-          row_title = "Bacterial samples",
-	  row_title_rot = 90, 
+          row_title_rot = 0,
           row_names_side = "left",
-          row_names_gp = gpar(cex = 0.75),
+          row_names_gp = gpar(cex = 0.5),
+          row_split = dat$group,
           border = TRUE,
           heatmap_legend_param = list(title = "Defence\nsystem\nfamily\npresent",
                                       labels = c("Yes", "No")),
-	  width = ncol(mat)*unit(4, "mm"), 
+          width = ncol(mat)*unit(4, "mm"),
           height = nrow(mat)*unit(4, "mm"))
 
 size <- calc_hm_size(hm)

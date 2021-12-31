@@ -7,11 +7,11 @@ properties:
   sample:
     type: string
     description: sample name/identifier
-  condition:
+  group:
     type: string
-    description: sample condition that will be compared during differential analysis (e.g. a treatment, a tissue time, a disease)
+    description: sample group for grouping samples in plots (e.g. a species)
 
 # columns that the config/samples.tsv file must have to pass schema validation
 required:
   - sample
-  - condition
+  - group

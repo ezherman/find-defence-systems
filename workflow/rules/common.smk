@@ -11,7 +11,7 @@ configfile: "config/config.yaml"
 validate(config, schema="../schemas/config.schema.yaml")
 
 samples = pd.read_csv(config["samples"], sep="\t").set_index("sample", drop=False)
-samples.index.names = ["sample_id"]
+samples.index.names = ["sample"]
 validate(samples, schema="../schemas/samples.schema.yaml")
 
 
@@ -125,7 +125,7 @@ def systems_all_assemblies(indir):
         table[col] = [1 if v != 0 else 0 for v in table[col]]
 
     # rename index
-    table = table.rename_axis('assembly')
+    table = table.rename_axis('sample')
 
     return table
 
