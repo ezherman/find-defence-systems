@@ -21,7 +21,8 @@ include: "rules/run_padloc.smk"
 include: "rules/systems_by_assembly.smk"
 include: "rules/systems_by_assembly_summarised.smk"
 include: "rules/systems_all_assemblies.smk"
+include: "rules/heatmap.smk"
 
 # Target rule
 rule all:
-    input: "results/main/systems_summarised.csv"
+    input: "results/main/heatmap.png"
