@@ -1,11 +1,11 @@
 # Run padloc
 rule run_padloc:
     output:
-        dir = directory("results/intermediate/padloc/padloc_{assembly}"),
-        csv = "results/intermediate/padloc/padloc_{assembly}/padloc_{assembly}.csv"
+        dir = directory("results/intermediate/padloc/padloc_{sample}"),
+        csv = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc.csv"
     input:
-        faa = "data/protein_seq/{assembly}.faa",
-        gff = "data/annotation/{assembly}.gff",
+        faa = "data/protein_seq/{sample}.faa",
+        gff = "data/annotation/{sample}.gff",
         hmm = ".snakemake/conda/" + find_conda_env_hash("workflow/envs/padloc.yaml") + "/data/hmm"
     conda: "../envs/padloc.yaml"
     shell:

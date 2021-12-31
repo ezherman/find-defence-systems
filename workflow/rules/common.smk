@@ -10,8 +10,8 @@ singularity: "docker://continuumio/miniconda3"
 configfile: "config/config.yaml"
 validate(config, schema="../schemas/config.schema.yaml")
 
-samples = pd.read_csv(config["samples"], sep="\t").set_index("sample", drop=False)
-samples.index.names = ["sample"]
+samples = pd.read_csv(config["samples"], sep="\t")
+SAMPLE_NAMES = samples["sample"]
 validate(samples, schema="../schemas/samples.schema.yaml")
 
 
@@ -33,7 +33,7 @@ def find_conda_env_hash(yaml):
     return h
 
 ## wrangle pandas dataframe for padloc and defense_finder
-def create_system_table(df, program):
+def create_subsystem_table(df, program):
 
     if program == "padloc":
         df = df.groupby(['system.number',
@@ -64,7 +64,7 @@ def create_system_table(df, program):
 ## merge padloc and defense_finder dataframes
 ## if padloc is empty because no results were found
 ## process only defense_finder
-def final_system_table(df_defense_finder, df_padloc = None):
+def merge_subsystem_tables(df_defense_finder, df_padloc = None):
 
     # if no df_padloc exists, final table is defense_finder only
     if df_padloc is None:
@@ -88,36 +88,26 @@ def final_system_table(df_defense_finder, df_padloc = None):
     return df
 
 
-## merge system tables of all assemblies
+## merge system tables of all samples
 ## also reduce data from number of hits to presence-absence
-def systems_all_assemblies(indir):
-
-    #find whether system_tables or system_tables_summarised folder was provided
-    indir_end = indir.split("_")[-1]
-    l = len(indir_end) + 1 #lengt + 1 for "_" sepatator ahead of assembly name
-
-    # analysis output for all assemblies
-    files = glob.glob(indir + "/*.csv")
-
-    # names of the assemblies
-    # assemblies = [f[f.rfind(indir_end) + l:f.find('.csv')] for f in files]
+def matrix_all_samples(files):
 
     # concatenate all analysis output
     df = pd.concat((pd.read_csv(f) for f in files),
-                   keys = ASSEMBLIES,
-                   names = ("assembly", "row"))
+                   keys = SAMPLE_NAMES,
+                   names = ("sample", "row"))
 
     #remove row index
     df = df.reset_index(level = "row", drop = True)
 
 
-    # add assemblies without defense system hits as "None"
-    no_hit_assemblies = [a for a in ASSEMBLIES if a not in df.index]
+    # add samples without defense system hits as "None"
+    no_hit_samples = [a for a in SAMPLE_NAMES if a not in df.index]
     new_entry = {'program': 'NA', 'system': 'none', 'protein_names': 'NA', 'protein_IDs' : 'NA'}
-    for a in no_hit_assemblies:
+    for a in no_hit_samples:
         df.loc[a] = new_entry
 
-    # create wide table with systems as columns and assemblies as rows
+    # create wide table with systems as columns and samples as rows
     table = pd.crosstab(df.index, df.system)
 
     # reduce data to presence-absence

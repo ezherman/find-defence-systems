@@ -4,9 +4,9 @@
 # after running defense-finder
 rule run_defense_finder:
     output:
-        dir = directory("results/intermediate/defense_finder/defense_finder_{assembly}"),
-        tsv = "results/intermediate/defense_finder/defense_finder_{assembly}/defense_finder_systems.tsv"
-    input: "data/protein_seq/{assembly}.faa"
+        dir = directory("results/intermediate/defense_finder/defense_finder_{sample}"),
+        tsv = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_systems.tsv"
+    input: "data/protein_seq/{sample}.faa"
     conda: "../envs/defensefinder.yaml"
     resources:
         n_defense_finder = 1

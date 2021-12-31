@@ -1,6 +1,6 @@
 rule heatmap:
-    output: "results/main/heatmap.png"
-    input: "results/main/systems_summarised.csv"
+    output: "results/main/heatmap_systems.png"
+    input: "results/main/matrix_systems.csv"
     params:
         samples = config["samples"]
     conda: "../envs/r.yaml"
