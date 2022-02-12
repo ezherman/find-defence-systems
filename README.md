@@ -3,7 +3,8 @@
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.10.0-brightgreen.svg)](https://snakemake.bitbucket.io)
 [![Build Status](https://travis-ci.org/snakemake-workflows/find-defence-systems.svg?branch=master)](https://travis-ci.org/snakemake-workflows/find-defence-systems)
 
-This is the template for a new Snakemake workflow. Replace this text with a comprehensive description covering the purpose and domain.
+This Snakemake workflow detects defence systems in bacterial genomes using [PADLOC](https://github.com/padloc/padloc) and [DefenceFinder](https://github.com/mdmparis/defense-finder). The workflow is currently under development and the instructions below are still to be updated. 
+
 Insert your code into the respective folders, i.e. `scripts`, `rules`, and `envs`. Define the entry point of the workflow in the `Snakefile` and the main configuration in the `config.yaml` file.
 
 ## Authors
