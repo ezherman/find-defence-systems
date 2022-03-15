@@ -1,0 +1,7 @@
+data/
+.snakemake/
+.Rhistory
+.conda/
+Dockerfile
+results/
+.cache/
