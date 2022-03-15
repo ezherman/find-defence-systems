@@ -5,7 +5,8 @@
 report: "report/workflow.rst"
 
 # Allow users to fix the underlying OS via singularity.
-singularity: "docker://continuumio/miniconda3"
+# singularity: "docker://continuumio/miniconda3"
+containerized: "docker://ezherman/find-defence-systems"
 
 # Load helper functions
 include: "rules/common.smk"
