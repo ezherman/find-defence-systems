@@ -12,7 +12,5 @@ rule run_defense_finder:
         n_defense_finder = 1
     shell:
         r"""defense-finder run {input} --out-dir {output.dir}
-            mv {output.dir}/*-defense-finder/* {output.dir}
-            rm -r {output.dir}/*-defense-finder
             rm {input}.idx #remove index file
          """
