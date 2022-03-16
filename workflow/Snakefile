@@ -12,6 +12,7 @@ containerized: "docker://ezherman/find-defence-systems"
 include: "rules/common.smk"
 
 # Load rules
+include: "rules/update_defense_finder_models.smk"
 include: "rules/run_defense_finder.smk"
 include: "rules/update_padloc_db.smk"
 include: "rules/run_padloc.smk"
