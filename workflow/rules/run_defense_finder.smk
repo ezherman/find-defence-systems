@@ -13,6 +13,6 @@ rule run_defense_finder:
     resources:
         n_defense_finder = 1
     shell:
-        r"""defense-finder run {input} --out-dir {output.dir}
-            rm {input}.idx #remove index file
+        r"""defense-finder run {input.data} --out-dir {output.dir}
+            rm {input.data}.idx #remove index file
          """
