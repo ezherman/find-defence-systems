@@ -53,7 +53,7 @@ hm <- mat %>%
 
 size <- calc_hm_size(hm)
 
-png(snakemake@output[[1]], width = size[1], height = size[2], res = 600, units = "mm")
+png(snakemake@output[[1]], width = size[1], height = size[2], res = 300, units = "mm")
 draw(hm)
 dev.off()
 
