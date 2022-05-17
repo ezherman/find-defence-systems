@@ -1,0 +1,2 @@
+jobs: 499
+cluster: "sbatch -t 30 -c 1 -o 'logs_slurm/{rule}.{wildcards}.out' -e 'logs_slurm/{rule}.{wildcards}.out' --mail-type=FAIL --mail-user elh605@york.ac.uk"
