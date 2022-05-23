@@ -1,3 +1,5 @@
+## TO BE PASTED INTO THE COMMAND LINE
+
 conda create -n padloc -c conda-forge -c bioconda -c padlocbio padloc
 
 conda activate padloc
