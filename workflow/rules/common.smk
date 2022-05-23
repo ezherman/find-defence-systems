@@ -21,6 +21,21 @@ import pandas as pd
 import hashlib
 import os
 import glob
+import gzip, shutil
+import wget #installed with pip
+
+## function to download sequence files
+## strain_to_sra created in obtain_genome_data rule
+
+def download_seq_files(gcf):
+    base = "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/"
+    folder = base + gcf[4:7] + "/" + gcf[7:10] + "/" + gcf[10:13] + "/" + gcf + "/" 
+    gff = folder + gcf + "_genomic.gff.gz"
+    faa = folder + gcf + "_protein.faa.gz"
+
+    # download gff and faa files
+    wget.download(gff, out = "data/annotation/" + gcf + ".gff.gz")
+    wget.download(faa, out = "data/protein_seq/" + gcf + ".faa.gz")
 
 ## find conda environment hash, adapted from
 ## https://bioinformatics.stackexchange.com/a/9346
