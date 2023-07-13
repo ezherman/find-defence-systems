@@ -1,7 +1,6 @@
 ## TO BE PASTED INTO THE COMMAND LINE
+## FROM THE ROOT OF THE REPOSITORY
 
-conda create -n padloc -c conda-forge -c bioconda -c padlocbio padloc
+mamba create -n padloc -c conda-forge -c bioconda -c padlocbio padloc -y
 
-conda activate padloc
-
-conda env export > ../envs/padloc.yaml
+mamba env export -n padloc > workflow/envs/padloc.yaml

@@ -1,7 +1,6 @@
 ## TO BE PASTED INTO THE COMMAND LINE
+## FROM THE ROOT OF THE REPOSITORY
 
-conda create -c conda-forge -c bioconda -n r_env r-base r-readr r-dplyr r-circlize bioconductor-complexheatmap 
+mamba create -c conda-forge -c bioconda -n r_env r-base r-readr r-dplyr r-circlize bioconductor-complexheatmap -y
 
-conda activate r_env
-
-conda env export > ../envs/r.yaml
+mamba env export -n r_env > workflow/envs/r.yaml

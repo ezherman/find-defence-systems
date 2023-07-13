@@ -1,9 +1,10 @@
 ## TO BE PASTED INTO THE COMMAND LINE
+## FROM THE ROOT OF THE REPOSITORY
 
-conda create -c bioconda -c conda-forge -n defensefinder pip=21.0 hmmer
+mamba create -c bioconda -c conda-forge -n defensefinder pip=21.0 hmmer -y
 
-conda activate defensefinder
+mamba activate defensefinder
 
 pip install mdmparis-defense-finder
 
-conda env export > ../envs/defensefinder.yaml
+mamba env export > workflow/envs/defensefinder.yaml
