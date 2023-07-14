@@ -43,7 +43,7 @@ def find_conda_env_hash(yaml):
 
     # if this workflow is used as a module, the padloc yaml file is not available locally
     # therefore download the file
-    if not os.path.file(yaml):
+    if not os.path.isfile(yaml):
         wget.download(
             "https://github.com/ezherman/find-defence-systems/blob/master/workflow/envs/padloc.yaml",
             out = yaml
