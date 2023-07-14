@@ -40,6 +40,15 @@ def download_seq_files(gcf):
 ## find conda environment hash, adapted from
 ## https://bioinformatics.stackexchange.com/a/9346
 def find_conda_env_hash(yaml):
+
+    # if this workflow is used as a module, the padloc yaml file is not available locally
+    # therefore download the file
+    if not os.path.file(yaml):
+        wget.download(
+            "https://github.com/ezherman/find-defence-systems/blob/master/workflow/envs/padloc.yaml",
+            out = yaml
+            )
+
     md5hash = hashlib.md5()
     md5hash.update((os.getcwd() + "/.snakemake/conda").encode())
     f = open(yaml, 'rb')
