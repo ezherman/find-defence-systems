@@ -3,7 +3,8 @@
 # padloc env directory that Snakemake creates includes a hash key that is
 # dependent on the user's machine
 rule update_padloc_db:
-    output: directory(".snakemake/conda/" + find_conda_env_hash("workflow/envs/padloc.yaml") + "/data/hmm")
+    output: directory(PADLOC_DB_DIR + "/hmm")
     conda: "../envs/padloc.yaml"
+    params: pdd = PADLOC_DB_DIR
     shell:
-        "padloc --db-update"
+        "padloc --data {params.pdd} --db-update"

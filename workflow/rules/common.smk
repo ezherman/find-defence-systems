@@ -13,12 +13,12 @@ validate(config, schema="../schemas/config.schema.yaml")
 
 samples = pd.read_csv(config["samples"], sep="\t")
 SAMPLE_NAMES = samples["sample"]
+PADLOC_DB_DIR = config["padloc_db_dir"]
 validate(samples, schema="../schemas/samples.schema.yaml")
 
 
 ################ define helper functions
 import pandas as pd
-import hashlib
 import os
 import glob
 import gzip, shutil
@@ -36,26 +36,6 @@ def download_seq_files(gcf):
     # download gff and faa files
     wget.download(gff, out = "data/annotation/" + gcf + ".gff.gz")
     wget.download(faa, out = "data/protein_seq/" + gcf + ".faa.gz")
-
-## find conda environment hash, adapted from
-## https://bioinformatics.stackexchange.com/a/9346
-def find_conda_env_hash(yaml):
-
-    # if this workflow is used as a module, the padloc yaml file is not available locally
-    # therefore download the file
-    if not os.path.isfile(yaml):
-        wget.download(
-            "https://github.com/ezherman/find-defence-systems/blob/master/workflow/envs/padloc.yaml",
-            out = yaml
-            )
-
-    md5hash = hashlib.md5()
-    md5hash.update((os.getcwd() + "/.snakemake/conda").encode())
-    f = open(yaml, 'rb')
-    md5hash.update(f.read())
-    f.close()
-    h = md5hash.hexdigest()
-    return h
 
 ## wrangle pandas dataframe for padloc and defense_finder
 def create_subsystem_table(df, program):

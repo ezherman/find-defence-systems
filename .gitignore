@@ -5,3 +5,4 @@ data/
 Dockerfile
 results/
 .cache/
+resources/padloc_db/
