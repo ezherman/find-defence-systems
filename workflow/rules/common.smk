@@ -42,17 +42,17 @@ def create_subsystem_table(df, program):
 
     if program == "padloc":
         df = df.groupby(['system.number',
-                         'system'])         # group by system
-        df = df.agg(';'.join)               # collapse rows within systems
-        df = df.reset_index()               # ungroup
+                         'system'])                     # group by system
+        df = df.agg(lambda x: ';'.join(map(str, x)))    # collapse rows within systems
+        df = df.reset_index()                           # ungroup
         df = df.rename(columns={"protein.name":"protein_names",
                                 "target.name":"protein_IDs"}) # rename columns
         df = df[["system", "protein_names", "protein_IDs"]]   # choose columns
 
     if program == "defense_finder":
-        df = df.groupby(['sys_id'])         # group by system
-        df = df.agg(';'.join)               # collapse rows within systems
-        df = df.reset_index()               # ungroup
+        df = df.groupby(['sys_id'])                     # group by system
+        df = df.agg(lambda x: ';'.join(map(str, x)))    # collapse rows within systems
+        df = df.reset_index()                           # ungroup
 
         #rename columns
         df = df.rename(columns={"sys_id":"system",
