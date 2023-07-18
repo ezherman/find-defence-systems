@@ -24,18 +24,57 @@ import glob
 import gzip, shutil
 import wget #installed with pip
 
-## function to download sequence files
-## strain_to_sra created in obtain_genome_data rule
+## functions and class to download sequence files
 
-def download_seq_files(gcf):
+# class to create combinations of data type and file extension
+class ncbi_combination():
+    def __init__(self, data_type, extension):
+        self.data_type = data_type
+        self.extension = extension
+
+allowed_ncbi_combinations = [
+    # from https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/147/155/GCF_900147155.1_390/ 
+    # as an example
+    ncbi_combination('assembly_report', 'txt'),
+    ncbi_combination('assembly_stats', 'txt'),
+    ncbi_combination('cds_from_genomic', 'fna.gz'),
+    ncbi_combination('feature_count', 'txt.gz'),
+    ncbi_combination('feature_table', 'txt.gz'),
+    ncbi_combination('genomic', 'fna.gz'),
+    ncbi_combination('genomic', 'gbff.gz'),
+    ncbi_combination('genomic', 'gff.gz'),
+    ncbi_combination('genomic', 'gtf.gz'),
+    ncbi_combination('protein', 'faa.gz'),
+    ncbi_combination('protein', 'gpff.gz'),
+    ncbi_combination('rna_from_genomic', 'fna.gz'),
+    ncbi_combination('translated_cds', 'faa.gz'),
+    ncbi_combination('wgsmaster', 'gbff.gz'),
+]
+
+def seq_file_downloader(gcf: str, combination: ncbi_combination, outdir: str):
+    """Download a file from RefSeq given a GCF accession, 
+       combination of data type and extension and an 
+       output directory."""
+
     base = "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/"
     folder = base + gcf[4:7] + "/" + gcf[7:10] + "/" + gcf[10:13] + "/" + gcf + "/" 
-    gff = folder + gcf + "_genomic.gff.gz"
-    faa = folder + gcf + "_protein.faa.gz"
+    file = folder + gcf + '_' + combination.data_type + '.' + combination.extension
 
-    # download gff and faa files
-    wget.download(gff, out = "data/annotation/" + gcf + ".gff.gz")
-    wget.download(faa, out = "data/protein_seq/" + gcf + ".faa.gz")
+    wget.download(file, out = outdir + gcf + '.' + combination.extension)
+
+
+def download_seq_file(gcf: str, data_type: str, extension: str, outdir: str):
+    """Check if the combination of data_type and str is allowed.
+       If it is, download the file with seq_file_downloader."""
+
+    combination = ncbi_combination(data_type, extension)
+    if vars(combination) in [vars(c) for c in allowed_ncbi_combinations]:
+        # download file
+        seq_file_downloader(gcf, combination, outdir)
+    else:
+        raise ValueError(
+            'The provided combination of data_type and extension is not supported.'
+            )
 
 ## wrangle pandas dataframe for padloc and defense_finder
 def create_subsystem_table(df, program):
