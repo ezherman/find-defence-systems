@@ -132,9 +132,10 @@ def merge_subsystem_tables(df_defense_finder, df_padloc = None):
     return df
 
 
-## merge system tables of all samples
-## also reduce data from number of hits to presence-absence
-def matrix_all_samples(files):
+def matrix_all_samples(files: list[str], binary: bool) -> pd.DataFrame:
+    """Merge defence system tables
+       Also reduce data from number of hits to presence-absence if binary = True
+    """
 
     # concatenate all analysis output
     df = pd.concat((pd.read_csv(f) for f in files),
@@ -154,9 +155,10 @@ def matrix_all_samples(files):
     # create wide table with systems as columns and samples as rows
     table = pd.crosstab(df.index, df.system)
 
-    # reduce data to presence-absence
-    for col in table.columns:
-        table[col] = [1 if v != 0 else 0 for v in table[col]]
+    if binary:
+        # reduce data to presence-absence
+        for col in table.columns:
+            table[col] = [1 if v != 0 else 0 for v in table[col]]
 
     # rename index
     table = table.rename_axis('sample')

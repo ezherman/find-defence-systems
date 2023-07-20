@@ -5,4 +5,4 @@ rule matrix_all_samples:
     input:
         mats = expand("results/intermediate/{{level}}_by_assembly/{{level}}_{sample}.csv", sample = SAMPLE_NAMES)
     run:
-        matrix_all_samples(input.mats).to_csv(output.mat)
+        matrix_all_samples(files = input.mats, binary = True).to_csv(output.mat)
