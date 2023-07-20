@@ -132,7 +132,7 @@ def merge_subsystem_tables(df_defense_finder, df_padloc = None):
     return df
 
 
-def matrix_all_samples(files: str, binary: bool) -> pd.DataFrame:
+def matrix_all_samples(files: list[str], binary: bool) -> pd.DataFrame:
     """Merge defence system tables
        Also reduce data from number of hits to presence-absence if binary = True
     """
