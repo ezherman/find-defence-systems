@@ -10,7 +10,8 @@ rule run_defense_finder:
         data = "data/protein_seq/{sample}.faa",
         models = os.path.expanduser('~') + "/.macsyfinder/data"
     conda: "../envs/defensefinder.yaml"
+    threads: 8
     shell:
-        r"""defense-finder run {input.data} --out-dir {output.dir} -w 1
+        r"""defense-finder run {input.data} --out-dir {output.dir} -w {threads}
             rm {input.data}.idx #remove index file
          """
