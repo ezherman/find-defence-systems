@@ -147,6 +147,8 @@ def matrix_all_samples(files: list[str], binary: bool) -> pd.DataFrame:
 
 
     # add samples without defense system hits as "None"
+    # if a file in files is empty, the corresponding key
+    # is skipped and not added to the keys of df
     no_hit_samples = [a for a in SAMPLE_NAMES if a not in df.index]
     new_entry = {'program': 'NA', 'system': 'none', 'protein_names': 'NA', 'protein_IDs' : 'NA'}
     for a in no_hit_samples:
