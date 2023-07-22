@@ -21,12 +21,6 @@ rule systems_by_sample:
             # e.g. Gabija in defense_finder and gabija in padloc
             df.system = df.system.str.lower()
 
-            # merge abi systems, for which subsystems are not delimited with "_" in padloc
-            # and some abi systems do not contain abi in their name,
-            # see https://github.com/padlocbio/padloc-db/blob/master/sys_meta.txt
-            abortive_systems = ("abi", "rexab", "lit", "bsta", "old", "tin", "prrc", "pifa")
-            df.system[df.system.str.startswith(abortive_systems)] = "abi"
-
             # merge dsr systems, for which subsystems are not delimited with "_" in padloc
             df.system[df.system.str.startswith("dsr")] = "dsr"
 
