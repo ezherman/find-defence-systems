@@ -74,7 +74,7 @@ def download_seq_file(refseq_accession: str, data_type: str, extension: str, out
     combination = ncbi_combination(data_type, extension)
     if vars(combination) in [vars(c) for c in allowed_ncbi_combinations]:
         # download file
-        seq_file_downloader(gcf, combination, outdir)
+        seq_file_downloader(refseq_accession, combination, outdir)
     else:
         raise ValueError(
             'The provided combination of data_type and extension is not supported.'
