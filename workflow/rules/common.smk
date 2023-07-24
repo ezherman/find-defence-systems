@@ -64,7 +64,7 @@ def seq_file_downloader(refseq_accession: str, combination: ncbi_combination, ou
     ftp_accession = ftp_base_path.split('/')[-1]
     ftp_path = ftp_base_path + '/' + ftp_accession + '_' + combination.data_type + '.' + combination.extension
 
-    wget.download(ftp_path, out = outdir + refseq_id + '.' + combination.extension)
+    wget.download(ftp_path, out = outdir + refseq_accession + '.' + combination.extension)
 
 
 def download_seq_file(refseq_accession: str, data_type: str, extension: str, outdir: str):
