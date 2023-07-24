@@ -1,7 +1,7 @@
 ## TO BE PASTED INTO THE COMMAND LINE
 ## FROM THE ROOT OF THE REPOSITORY
 
-mamba create -c conda-forge -c bioconda -n snakemake pandas snakemake mamba pip -y
+mamba create -c conda-forge -c bioconda -n snakemake pandas snakemake mamba pip biopython -y
 
 mamba activate snakemake
 pip install wget
