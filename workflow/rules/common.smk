@@ -23,6 +23,7 @@ import os
 import glob
 import gzip, shutil
 import wget #installed with pip
+from Bio import Entrez
 
 ## functions and class to download sequence files
 
@@ -51,26 +52,29 @@ allowed_ncbi_combinations = [
     ncbi_combination('wgsmaster', 'gbff.gz'),
 ]
 
-def seq_file_downloader(gcf: str, combination: ncbi_combination, outdir: str):
+def seq_file_downloader(refseq_accession: str, combination: ncbi_combination, outdir: str):
     """Download a file from RefSeq given a GCF accession, 
        combination of data type and extension and an 
        output directory."""
 
-    base = "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/"
-    folder = base + gcf[4:7] + "/" + gcf[7:10] + "/" + gcf[10:13] + "/" + gcf + "/" 
-    file = folder + gcf + '_' + combination.data_type + '.' + combination.extension
+    refseq_id = Entrez.read(Entrez.esearch(db = 'assembly', term = refseq_accession))['IdList'][0]
+    ftp_base_path = Entrez.read(Entrez.esummary(db="assembly", id=refseq_id))["DocumentSummarySet"][
+        "DocumentSummary"
+    ][0]["FtpPath_RefSeq"]
+    ftp_accession = ftp_base_path.split('/')[-1]
+    ftp_path = ftp_base_path + '/' + ftp_accession + '_' + combination.data_type + '.' + combination.extension
 
-    wget.download(file, out = outdir + gcf + '.' + combination.extension)
+    wget.download(ftp_path, out = outdir + refseq_accession + '.' + combination.extension)
 
 
-def download_seq_file(gcf: str, data_type: str, extension: str, outdir: str):
+def download_seq_file(refseq_accession: str, data_type: str, extension: str, outdir: str):
     """Check if the combination of data_type and str is allowed.
        If it is, download the file with seq_file_downloader."""
 
     combination = ncbi_combination(data_type, extension)
     if vars(combination) in [vars(c) for c in allowed_ncbi_combinations]:
         # download file
-        seq_file_downloader(gcf, combination, outdir)
+        seq_file_downloader(refseq_accession, combination, outdir)
     else:
         raise ValueError(
             'The provided combination of data_type and extension is not supported.'
