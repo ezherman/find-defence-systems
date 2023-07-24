@@ -3,6 +3,7 @@ rule obtain_genome_data:
     output:
         prt_sq  = "data/protein_seq/{sample}.faa",
         annot   = "data/annotation/{sample}.gff"
+    resources: ncbi_connection = 1
     run:
 
         # obtain genome data
