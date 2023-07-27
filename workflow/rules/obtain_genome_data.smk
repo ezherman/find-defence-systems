@@ -3,6 +3,7 @@ rule obtain_genome_data:
     output:
         prt_sq  = "data/protein_seq/{sample}.faa",
         annot   = "data/annotation/{sample}.gff"
+    retries: 2
     run:
 
         # obtain genome data
