@@ -24,6 +24,7 @@ rule obtain_genome_data:
         
         
         # unzip the files
+        __import__('pdb').set_trace()
         for f in output:
             with gzip.open(f + '.gz', 'r') as f_in, open(f, 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
