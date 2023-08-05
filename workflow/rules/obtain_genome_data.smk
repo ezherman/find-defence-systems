@@ -1,8 +1,10 @@
 # Download genome data from NCBI
 rule obtain_genome_data:
     output:
-        prt_sq  = "data/protein_seq/{sample}.faa",
-        annot   = "data/annotation/{sample}.gff"
+        faa_gz  = "data/protein_seq/{sample}.faa.gz",
+        gff_gz  = "data/annotation/{sample}.gff.gz",
+        faa     = temp("data/protein_seq/{sample}.faa"),
+        gff     = temp("data/annotation/{sample}.gff")
     retries: 2
     resources: ncbi_connection = 1
     run:
@@ -23,10 +25,12 @@ rule obtain_genome_data:
 
         
         
-        # unzip the files
-        for f in output:
-            with gzip.open(f + '.gz', 'r') as f_in, open(f, 'wb') as f_out:
-                shutil.copyfileobj(f_in, f_out)
+        # sometimes a corrupt file is obtained, which results in an unzip error in ppanggolin.
+        # try to gunzip here. 
+        # if bash throws an error, the rule is retried -> files are downloaded again.
+        shell("gunzip -c {output.fna_gz} > {output.fna}")
+        shell("gunzip -c {output.gff_gz} > {output.gff}")
+            
 
 
         
