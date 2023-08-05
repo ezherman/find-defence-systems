@@ -1,7 +1,8 @@
 # Run defense finder
 rule run_defense_finder:
     output:
-        tsv     = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_systems.tsv",
+        systems = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_systems.tsv",
+        genes   = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_genes.tsv"
         index   = temp("data/protein_seq/{sample}.faa.idx")
     input: 
         data = "data/protein_seq/{sample}.faa",
