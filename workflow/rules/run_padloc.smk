@@ -3,8 +3,8 @@ rule run_padloc:
     output:
         dir     = directory("results/intermediate/padloc/padloc_{sample}"),
         csv     = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc.csv",
-        faa     = temp("data/protein_seq/{sample}.faa"),
-        gff     = temp("data/annotation/{sample}.gff")
+        faa     = temp("tmp_unzipped_padloc_inputs/{sample}.faa"),
+        gff     = temp("tmp_unzipped_padloc_inputs/{sample}.gff")
     input:
         faa_gz  = "data/protein_seq/{sample}.faa.gz",
         gff_gz  = "data/annotation/{sample}.gff.gz",

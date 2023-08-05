@@ -3,8 +3,8 @@ rule run_defense_finder:
     output:
         systems = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_systems.tsv",
         genes   = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_genes.tsv",
-        index   = temp("data/protein_seq/{sample}.faa.idx"),
-        faa     = temp("data/protein_seq/{sample}.faa")
+        index   = temp("tmp_unzipped_defense_finder_inputs/{sample}.faa.idx"),
+        faa     = temp("tmp_unzipped_defense_finder_inputs/{sample}.faa")
     input: 
         data = "data/protein_seq/{sample}.faa.gz",
         models = os.path.expanduser('~') + "/.macsyfinder/data"
