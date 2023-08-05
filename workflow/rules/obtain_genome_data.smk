@@ -2,9 +2,7 @@
 rule obtain_genome_data:
     output:
         faa_gz  = "data/protein_seq/{sample}.faa.gz",
-        gff_gz  = "data/annotation/{sample}.gff.gz",
-        faa     = temp("data/protein_seq/{sample}.faa"),
-        gff     = temp("data/annotation/{sample}.gff")
+        gff_gz  = "data/annotation/{sample}.gff.gz"
     retries: 2
     resources: ncbi_connection = 1
     run:
@@ -28,8 +26,8 @@ rule obtain_genome_data:
         # sometimes a corrupt file is obtained, which results in an unzip error in ppanggolin.
         # try to gunzip here. 
         # if bash throws an error, the rule is retried -> files are downloaded again.
-        shell("gunzip -c {output.fna_gz} > {output.fna}")
-        shell("gunzip -c {output.gff_gz} > {output.gff}")
+        shell("gunzip -c {output.faa_gz} > tmp.{wildcards.sample}.faa; rm -f tmp.{wildcards.sample}.faa")
+        shell("gunzip -c {output.gff_gz} > tmp.{wildcards.sample}.gff; rm -f tmp.{wildcards.sample}.gff")
             
 
 
