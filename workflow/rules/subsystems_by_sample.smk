@@ -5,7 +5,7 @@ rule subsystems_by_sample:
     output:
         csv = "results/intermediate/subsystems_by_assembly/subsystems_{sample}.csv"
     input:
-        dfinder = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_systems.tsv",
+        dfinder = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_genes.tsv",
         padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc.csv"
     run:
 

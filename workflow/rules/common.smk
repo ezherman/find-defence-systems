@@ -99,8 +99,8 @@ def create_subsystem_table(df, program):
 
         #rename columns
         df = df.rename(columns={"sys_id":"system",
-                                "name_of_profiles_in_sys":"protein_names",
-                                "protein_in_syst":"protein_IDs"})
+                                "gene_name":"protein_names",
+                                "hit_id":"protein_IDs"})
         df = df[["system", "protein_names", "protein_IDs"]] # choose columns
 
         #remove "UserReplicon_" from system names
