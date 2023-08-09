@@ -27,8 +27,8 @@ rule subsystems_by_sample:
         if os.stat(input.padloc).st_size == 0:
 
             # import and wrangle
-            defense_finder = pd.read_table(input.dfinder)
-            defense_finder = create_subsystem_csv(defense_finder, "defense_finder")
+            defense_finder = pd.read_csv(input.dfinder)
+            defense_finder = create_subsystem_table(defense_finder, "defense_finder")
 
             # export
             merge_subsystem_tables(defense_finder).to_csv(output.csv)
