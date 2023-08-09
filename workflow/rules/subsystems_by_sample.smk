@@ -6,7 +6,7 @@ rule subsystems_by_sample:
         csv = "results/intermediate/subsystems_by_assembly/subsystems_{sample}.csv"
     input:
         dfinder = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_genes_renamed.csv",
-        padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc.csv"
+        padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc_renamed.csv"
     run:
 
         # if padloc found hits
