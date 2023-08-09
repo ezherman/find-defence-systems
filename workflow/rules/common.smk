@@ -94,7 +94,24 @@ def generalise_system_names(row, software):
             # remove class from name
             system = re.sub('class[0-9]+-subtype-', 'subtype_', system)
     
-        return system
+    elif software == 'padloc':
+        system = row['system'].lower()
+
+        if 'cas_' in system:
+
+            # if the naming matches 'type_[a-z]+-',
+            # where the final '-' is key,
+            # it's actually a cas subtype definition
+            system = re.sub('type_[a-z]+-', 
+                            'subtype_' + system.split('_')[-1].split('-')[0] + '-',
+                            system)
+            
+            # for some subtypes, padloc has multiple models (e.g. i-f1, i-f2, i-f3)
+            # the defensefinder definitions aren't as granular
+            # generalise the padloc naming by removing the numerical suffix
+            system = re.sub('([a-z]+-[a-z])[0-9]', '\\1', system)
+
+    return system
 
 ## wrangle pandas dataframe for padloc and defense_finder
 def create_subsystem_table(df, program):
