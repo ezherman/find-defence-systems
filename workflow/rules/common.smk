@@ -84,18 +84,15 @@ def download_seq_file(refseq_accession: str, data_type: str, extension: str, out
 # between padloc and defense_finder
 def generalise_system_names(row, software):
 
-    system = row.system
+    system = row.system.lower()
 
     if software == 'defense_finder':
-
-        system = system.lower()
 
         if 'cas_' in system:
             # remove class from name
             system = re.sub('class[0-9]+-subtype-', 'subtype_', system)
     
     elif software == 'padloc':
-        system = row['system'].lower()
 
         if 'cas_' in system:
 
