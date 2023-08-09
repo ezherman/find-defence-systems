@@ -7,7 +7,7 @@ rule rename_padloc_systems:
         padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc.csv"
     run:
         #-------- import data
-        padloc = pd.read_table(input.padloc)
+        padloc = pd.read_csv(input.padloc)
 
         #-------- rename the systems
         # generalise_system_names is defined in workflow/rules/common.smk
