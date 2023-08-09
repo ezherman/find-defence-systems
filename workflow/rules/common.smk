@@ -80,6 +80,22 @@ def download_seq_file(refseq_accession: str, data_type: str, extension: str, out
             'The provided combination of data_type and extension is not supported.'
             )
 
+# Define a custom function for generalisation of system names
+# between padloc and defense_finder
+def generalise_system_names(row, software):
+
+    system = row.system
+
+    if software == 'defense_finder':
+
+        system = system.lower()
+
+        if 'cas_' in system:
+            # remove class from name
+            system = re.sub('class[0-9]+-subtype-', 'subtype_', system)
+    
+        return system
+
 ## wrangle pandas dataframe for padloc and defense_finder
 def create_subsystem_table(df, program):
 
@@ -95,16 +111,12 @@ def create_subsystem_table(df, program):
     if program == "defense_finder":
         df = df.groupby(['sys_id'])                     # group by system
         df = df.agg(lambda x: ';'.join(map(str, x)))    # collapse rows within systems
-        df = df.reset_index()                           # ungroup
 
         #rename columns
         df = df.rename(columns={"sys_id":"system",
                                 "gene_name":"protein_names",
                                 "hit_id":"protein_IDs"})
         df = df[["system", "protein_names", "protein_IDs"]] # choose columns
-
-        #remove "UserReplicon_" from system names
-        df["system"] = df["system"].str.replace('UserReplicon_', '')
 
     return df
 
