@@ -110,31 +110,6 @@ def generalise_system_names(row, software):
 
     return system
 
-def create_subsystem_table(df, program):
-
-    if program == "padloc":
-        df = (
-            df
-            .groupby(['system.number','system'])                     # group by system
-            .agg(lambda x: ';'.join(map(str, x)))    # collapse rows within systems
-            .reset_index()                           # ungroup
-            .rename(columns={"protein.name":"protein_names", "target.name":"protein_IDs"})) # rename columns
-        
-        df = df[["system", "protein_names", "protein_IDs"]]   # choose columns
-
-    if program == "defense_finder":
-        df = (
-            df
-            .groupby(['sys_id', 'system'])                     # group by system
-            .agg(lambda x: ';'.join(map(str, x)))    # collapse rows within systems
-            .rename(columns={"gene_name":"protein_names", "hit_id":"protein_IDs"})
-            .reset_index()
-            )
-        df = df[["system", "protein_names", "protein_IDs"]] # choose columns
-
-    return df
-
-
 ## merge padloc and defense_finder dataframes
 ## if padloc is empty because no results were found
 ## process only defense_finder
