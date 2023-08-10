@@ -3,9 +3,9 @@
 # remove the *_other calls in those cases
 rule filter_padloc_systems:
     output:
-        padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc_filtered.csv"
+        padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc_ltags_filtered.csv"
     input:
-        padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc.csv"
+        padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc_ltags.csv"
     run:
         #-------- import data
         padloc = pd.read_csv(input.padloc)
