@@ -110,30 +110,32 @@ def generalise_system_names(row, software):
 
     return system
 
-## wrangle pandas dataframe for padloc and defense_finder
+## merge padloc and defense_finder dataframes
+## if padloc is empty because no results were found
+## process only defense_finder
 def create_subsystem_table(df, program):
 
     if program == "padloc":
-        df = df.groupby(['system.number',
-                         'system'])                     # group by system
-        df = df.agg(lambda x: ';'.join(map(str, x)))    # collapse rows within systems
-        df = df.reset_index()                           # ungroup
-        df = df.rename(columns={"protein.name":"protein_names",
-                                "target.name":"protein_IDs"}) # rename columns
+        df = (
+            df
+            .groupby(['system.number','system'])                     # group by system
+            .agg(lambda x: ';'.join(map(str, x)))    # collapse rows within systems
+            .reset_index()                           # ungroup
+            .rename(columns={"protein.name":"protein_names", "target.name":"protein_IDs"})) # rename columns
+        
         df = df[["system", "protein_names", "protein_IDs"]]   # choose columns
 
     if program == "defense_finder":
-        df = df.groupby(['sys_id'])                     # group by system
-        df = df.agg(lambda x: ';'.join(map(str, x)))    # collapse rows within systems
-
-        #rename columns
-        df = df.rename(columns={"sys_id":"system",
-                                "gene_name":"protein_names",
-                                "hit_id":"protein_IDs"})
+        df = (
+            df
+            .groupby(['sys_id', 'system'])                     # group by system
+            .agg(lambda x: ';'.join(map(str, x)))    # collapse rows within systems
+            .rename(columns={"gene_name":"protein_names", "hit_id":"protein_IDs"})
+            .reset_index()
+            )
         df = df[["system", "protein_names", "protein_IDs"]] # choose columns
 
     return df
-
 
 ## merge padloc and defense_finder dataframes
 ## if padloc is empty because no results were found
@@ -147,7 +149,8 @@ def merge_subsystem_tables(df_defense_finder, df_padloc = None):
                        keys = ["defense_finder"],
                        names = ("program", "row"))
 
-        df = df.reset_index(level = "row", drop = True)
+        # remove the row index, then make the program index into a column
+        df = df.reset_index(level = 'row', drop = True).reset_index()
 
     # if df_padloc exists, merge padloc and defense_finder
     if isinstance(df_padloc, pd.DataFrame):
@@ -156,7 +159,8 @@ def merge_subsystem_tables(df_defense_finder, df_padloc = None):
                    keys = ["padloc", "defense_finder"],
                    names = ("program", "row"))          # merge tables
 
-        df = df.reset_index(level = "row", drop = True)     # drop row index
+        # remove the row index, then make the program index into a column
+        df = df.reset_index(level = 'row', drop = True).reset_index()
 
 
     return df
