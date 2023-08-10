@@ -2,9 +2,9 @@
 # so that they are comparable to the renamed padloc output
 rule rename_padloc_systems:
     output:
-        padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc_renamed.csv"
+        padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc_filtered_renamed.csv"
     input:
-        padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc.csv"
+        padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc_filtered.csv"
     run:
         #-------- import data
         padloc = pd.read_csv(input.padloc)
