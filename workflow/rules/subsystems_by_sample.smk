@@ -53,10 +53,10 @@ rule subsystems_by_sample:
             # loop through all but the final row
             # for each row, check whether its protein_IDs are a subset of any downstream row protein IDs
             # if they are, add the row index / system ID to a list of rows to remove
-            max_index = max(group_data.index)
+            final_index = group_data.index[-1]
             for i in group_data.index[0:-1]:
                 protein_IDs = group_data.loc[i]['protein_IDs']
-                possible_supersets = group_data.loc[range(i+1, max_index+1)].protein_IDs.to_list()
+                possible_supersets = group_data.loc[range(i+1, final_index+1)].protein_IDs.to_list()
 
                 subset_boolean = [set(protein_IDs) <= set(e) for e in possible_supersets]
                 
