@@ -1,9 +1,9 @@
 rule obtain_padloc_locus_tags:
     output:
-        hits    = "results/intermediate/defence_system_genes/padloc/{sample}.csv",
+        hits    = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc_ltags.csv",
         gff_db  = temp('gff_{sample}.db')
     input:
-        padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc_filtered_renamed.csv",
+        padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc.csv",
         gff_gz  = "data/annotation/{sample}.gff.gz"
     run:
         # -------- Load data
