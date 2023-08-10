@@ -22,8 +22,9 @@ import pandas as pd
 import os
 import glob
 import gzip, shutil
+import gffutils
 import wget #installed with pip
-from Bio import Entrez
+from Bio import Entrez, SeqIO
 
 ## functions and class to download sequence files
 
