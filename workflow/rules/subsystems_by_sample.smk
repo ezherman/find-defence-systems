@@ -70,9 +70,9 @@ rule subsystems_by_sample:
 
         # find systems that have a non-unique set of locus tags
         df['dup'] = df.duplicated(subset = 'locus_tags', keep = False)
-        non_unique_locus_tags = df[df['dup'] == True]
+
         non_unique_locus_tags_groups = (
-            non_unique_locus_tags
+            df[df['dup'] == True] # rows with non-unique set of locus tags
             .reset_index()
             .groupby('locus_tags')
             .apply(lambda x: [list(x['index']), list(x['system'])])
@@ -82,6 +82,7 @@ rule subsystems_by_sample:
 
         # isolate the indices associated with *_other systems that have
         # locus tags identical to at least one non-*_other system
+        # note this refers to indices in df, not in non_unique_locus_tags_groups
         indices_to_remove = []
         for i in non_unique_locus_tags_groups.index:
             row = non_unique_locus_tags_groups.loc[i]
