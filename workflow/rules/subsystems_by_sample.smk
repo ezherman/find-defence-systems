@@ -66,6 +66,36 @@ rule subsystems_by_sample:
         # exclude the entries which form a subset of another entry with the same system designation
         df = df.loc[~ df.index.isin(idx_to_exclude)].drop('group_id', axis = 1)
 
-        # export
+        #-------- remove *_other systems where their locus tags have a more informative system annotation
+
+        # find systems that have a non-unique set of locus tags
+        df['dup'] = df.duplicated(subset = 'locus_tags', keep = False)
+        non_unique_locus_tags = df[df['dup'] == True]
+        non_unique_locus_tags_groups = (
+            non_unique_locus_tags
+            .reset_index()
+            .groupby('locus_tags')
+            .apply(lambda x: [list(x['index']), list(x['system'])])
+            .apply(pd.Series)
+            .rename(columns = {0: 'indices', 1: 'systems'})
+        )
+
+        # isolate the indices associated with *_other systems that have
+        # locus tags identical to at least one non-*_other system
+        indices_to_remove = []
+        for i in non_unique_locus_tags_groups.index:
+            row = non_unique_locus_tags_groups.loc[i]
+            other_systems = [s.endswith('_other') for s in row.systems]
+
+            # at least one but less than all systems are *_other
+            if sum(other_systems) > 0 and sum(other_systems) < len(other_systems):
+                for j in range(0, len(row['indices'])):
+                    if other_systems[j]:
+                        indices_to_remove.append(row['indices'][j])
+
+        # remove these hits
+        df = df.loc[~df.index.isin(indices_to_remove)].drop('dup', axis = 1)
+
+        #-------- export
         df.to_csv(output.csv, index = False)
 
