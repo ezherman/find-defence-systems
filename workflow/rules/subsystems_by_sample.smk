@@ -6,7 +6,7 @@ rule subsystems_by_sample:
         csv = "results/intermediate/subsystems_by_assembly/subsystems_{sample}.csv"
     input:
         dfinder = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_genes_ltags_renamed.csv",
-        padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc_ltags_filtered_renamed.csv"
+        padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc_ltags_renamed.csv"
     run:
 
         #-------- merging and reindexing 
