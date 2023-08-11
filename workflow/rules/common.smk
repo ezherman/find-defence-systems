@@ -22,8 +22,9 @@ import pandas as pd
 import os
 import glob
 import gzip, shutil
+import gffutils
 import wget #installed with pip
-from Bio import Entrez
+from Bio import Entrez, SeqIO
 
 ## functions and class to download sequence files
 
@@ -121,19 +122,19 @@ def create_subsystem_table(df, program):
             .groupby(['system.number','system'])                     # group by system
             .agg(lambda x: ';'.join(map(str, x)))    # collapse rows within systems
             .reset_index()                           # ungroup
-            .rename(columns={"protein.name":"protein_names", "target.name":"protein_IDs"})) # rename columns
+            .rename(columns={"protein.name":"protein_names", "target.name":"protein_IDs", "locus_tag":"locus_tags"})) # rename columns
         
-        df = df[["system", "protein_names", "protein_IDs"]]   # choose columns
+        df = df[["system", "protein_names", "protein_IDs", "locus_tags"]]   # choose columns
 
     if program == "defense_finder":
         df = (
             df
             .groupby(['sys_id', 'system'])                     # group by system
             .agg(lambda x: ';'.join(map(str, x)))    # collapse rows within systems
-            .rename(columns={"gene_name":"protein_names", "hit_id":"protein_IDs"})
+            .rename(columns={"gene_name":"protein_names", "hit_id":"protein_IDs", "locus_tag":"locus_tags"})
             .reset_index()
             )
-        df = df[["system", "protein_names", "protein_IDs"]] # choose columns
+        df = df[["system", "protein_names", "protein_IDs", "locus_tags"]] # choose columns
 
     return df
 

@@ -2,12 +2,12 @@
 # so that they are comparable to the renamed padloc output
 rule rename_defense_finder_systems:
     output:
-        dfinder = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_genes_renamed.csv"
+        dfinder = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_genes_ltags_renamed.csv"
     input:
-        dfinder = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_genes.tsv",
+        dfinder = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_genes_ltags.csv",
     run:
         #-------- import data
-        dfinder = pd.read_table(input.dfinder)
+        dfinder = pd.read_csv(input.dfinder)
 
         #-------- wrangle data, then rename the systems
         # system name is sys_id with the UserReplicon_ prefix and numerical suffix (e.g. _1) removed
