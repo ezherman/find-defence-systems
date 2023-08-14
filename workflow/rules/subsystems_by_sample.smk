@@ -71,7 +71,7 @@ rule subsystems_by_sample:
         # turn locus tag strings into sets
         df['locus_tags_set'] = df['locus_tags'].str.split(';').apply(set)
 
-        # separate date into _other systems and non _other
+        # separate data into _other systems and non _other
         df_other = df[['_other' in s for s in df['system']]]
         df_non_other = df[[i not in df_other.index for i in df.index]]
 
