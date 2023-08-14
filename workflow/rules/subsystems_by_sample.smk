@@ -68,34 +68,26 @@ rule subsystems_by_sample:
 
         #-------- remove *_other systems where their locus tags have a more informative system annotation
 
-        # find systems that have a non-unique set of locus tags
-        df['dup'] = df.duplicated(subset = 'locus_tags', keep = False)
+        # turn locus tag strings into sets
+        df['locus_tags_set'] = df['locus_tags'].str.split(';').apply(set)
 
-        non_unique_locus_tags_groups = (
-            df[df['dup'] == True] # rows with non-unique set of locus tags
-            .reset_index()
-            .groupby('locus_tags')
-            .apply(lambda x: [list(x['index']), list(x['system'])])
-            .apply(pd.Series)
-            .rename(columns = {0: 'indices', 1: 'systems'})
-        )
+        # separate data into _other systems and non _other
+        df_other = df[['_other' in s for s in df['system']]]
+        df_non_other = df[[i not in df_other.index for i in df.index]]
 
-        # isolate the indices associated with *_other systems that have
-        # locus tags identical to at least one non-*_other system
-        # note this refers to indices in df, not in non_unique_locus_tags_groups
-        indices_to_remove = []
-        for i in non_unique_locus_tags_groups.index:
-            row = non_unique_locus_tags_groups.loc[i]
-            other_systems = [s.endswith('_other') for s in row.systems]
+        sys_indices_to_remove = []
 
-            # at least one but less than all systems are *_other
-            if sum(other_systems) > 0 and sum(other_systems) < len(other_systems):
-                for j in range(0, len(row['indices'])):
-                    if other_systems[j]:
-                        indices_to_remove.append(row['indices'][j])
+        for i in df_other.index:
+            one_other_system = df_other.loc[i]['locus_tags_set']
 
-        # remove these hits
-        df = df.loc[~df.index.isin(indices_to_remove)].drop('dup', axis = 1)
+            # check whether one_other_system is a subset of any non _other system
+            subsets = [one_other_system <= ltags for ltags in df_non_other['locus_tags_set']]
+
+            if any(subsets):
+                sys_indices_to_remove.append(i)
+
+        # remove the _other systems which are subsets of non _other systems
+        df = df.loc[~df.index.isin(sys_indices_to_remove)].drop('locus_tags_set', axis = 1)
 
         #-------- export
         df.to_csv(output.csv, index = False)
