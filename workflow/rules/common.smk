@@ -139,30 +139,14 @@ def create_subsystem_table(df, program):
     return df
 
 ## merge padloc and defense_finder dataframes
-## if padloc is empty because no results were found
-## process only defense_finder
-def merge_subsystem_tables(df_defense_finder, df_padloc = None):
+def merge_subsystem_tables(df_defense_finder, df_padloc):
 
-    # if no df_padloc exists, final table is defense_finder only
-    if df_padloc is None:
+    df = pd.concat([df_padloc, df_defense_finder],
+                    keys = ["padloc", "defense_finder"],
+                    names = ("program", "row"))          # merge tables
 
-        df = pd.concat([df_defense_finder],
-                       keys = ["defense_finder"],
-                       names = ("program", "row"))
-
-        # remove the row index, then make the program index into a column
-        df = df.reset_index(level = 'row', drop = True).reset_index()
-
-    # if df_padloc exists, merge padloc and defense_finder
-    if isinstance(df_padloc, pd.DataFrame):
-
-        df = pd.concat([df_padloc, df_defense_finder],
-                   keys = ["padloc", "defense_finder"],
-                   names = ("program", "row"))          # merge tables
-
-        # remove the row index, then make the program index into a column
-        df = df.reset_index(level = 'row', drop = True).reset_index()
-
+    # remove the row index, then make the program index into a column
+    df = df.reset_index(level = 'row', drop = True).reset_index()
 
     return df
 
