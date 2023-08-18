@@ -14,11 +14,8 @@ rule run_padloc:
         pdd             = PADLOC_DB_DIR,
         outdir_prefix   = "results/intermediate/padloc/padloc"
     shell:
-        r"""#empty output file in case padloc finds no results
-            #otherwise snakemake exits due to lack of output file
-            #and downstream processing fails
-            echo "system.number,seqid,system,target.name,hmm.accession,hmm.name,protein.name,full.seq.E.value,domain.iE.value,target.coverage,hmm.coverage,start,end,strand,target.description,relative.position,contig.end,all.domains,best.hits" > {output.csv}
-
+        r"""touch {output.csv} #empty output file in case padloc finds no results
+                               #otherwise snakemake exits due to lack of output file
             gunzip -c {input.faa_gz} > {output.faa}
             gunzip -c {input.gff_gz} > {output.gff}
             padloc --force --data {params.pdd} --faa {output.faa} --gff {output.gff} --outdir {params.outdir_prefix}_{wildcards.sample} --cpu {threads}
