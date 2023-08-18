@@ -6,12 +6,17 @@ rule rename_padloc_systems:
     input:
         padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc_ltags.csv"
     run:
-        #-------- import data
-        padloc = pd.read_csv(input.padloc)
+        #-------- if padloc did not find hits, create empty output files
+        if os.stat(input.padloc).st_size == 0:
+            shell('cp {input.padloc} {output.padloc}')
 
-        #-------- rename the systems
-        # generalise_system_names is defined in workflow/rules/common.smk
-        padloc['system'] = padloc.apply(generalise_system_names, software="padloc", axis=1)
+        else:        
+            #-------- import data
+            padloc = pd.read_csv(input.padloc)
 
-        #-------- export the data
-        padloc.to_csv(output.padloc, index = False)
+            #-------- rename the systems
+            # generalise_system_names is defined in workflow/rules/common.smk
+            padloc['system'] = padloc.apply(generalise_system_names, software="padloc", axis=1)
+
+            #-------- export the data
+            padloc.to_csv(output.padloc, index = False)
