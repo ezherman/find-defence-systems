@@ -95,7 +95,7 @@ def generalise_system_names(row, software):
             system = re.sub('class[0-9]+-subtype-', 'subtype_', system)
         
 
-        # zorya name misses and underscore, e.g. zorya_typei instead of zorya_type_i
+        # zorya name misses an underscore, e.g. zorya_typei instead of zorya_type_i
         if 'zorya' in system:
             system = '_'.join(['zorya_type', system.split('zorya_type')[-1]])
         
@@ -131,11 +131,12 @@ def generalise_system_names(row, software):
         if 'dsr' in system and '_' not in system:
             system = '_'.join(['dsr', system.split('dsr')[-1]])
 
-    # remove type from name
+    # remove type from name, except for cas where definitions
+    # need to be distinguished as type or subtype
     if 'cas_' not in system:
         system = re.sub('_type', '', system)
     
-    # if numbering is integer, convert to roman
+    # if numbering is integer, convert to roman, e.g. dsr_1 -> dsr_i
     if system.split('_')[-1].isdigit():
         roman_numeral = roman.toRoman(int(system.split('_')[-1])).lower()
         system = '_'.join(system.split('_')[0:-1]) + '_' + roman_numeral

@@ -110,13 +110,16 @@ rule subsystems_by_sample:
         # e.g. hachiman vs hachiman_i, only if the hachiman locus_tags fall within those of hachiman_i
 
         # find hits with systems not defined at type level, for which a type level annotation does exist
-        # some family-level systems are defined with '-fam', e.g. lamassu-fam
+        # split statement because some family-level systems are defined with '-fam', e.g. lamassu-fam
+        # split doesn't affect output of s if s does not contain '-fam' 
+        # system + '_' indicates a type definition
         systems_to_check = {
             s
             for s in df.system
-            if any(df["system"].str.contains("|".join([s + "_", s.split("-fam")[0] + "_"])))
+            if any(df["system"].str.contains(s.split("-fam")[0] + "_"))
         }
 
+        # if system has '-fam', create object without this suffix for searching below
         for system in systems_to_check:
             if system.endswith("-fam"):
                 system_clean = system.split("-fam")[0]
@@ -124,7 +127,7 @@ rule subsystems_by_sample:
                 system_clean = system
 
             # find locus tags associated with the systems defined at type level
-            # system + '_' indicates there's a type definition
+            # system_clean + '_' indicates there's a type definition
             systems_with_type = df["system"][
                 df.system.str.contains(system_clean + "_")
             ].to_list()
