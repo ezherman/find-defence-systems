@@ -37,6 +37,11 @@ rule subsystems_by_sample:
             df = merge_subsystem_tables(defense_finder)
         
 
+        #-------- remove drt_class_* systems
+        # these are broadly defined system classes specific to padloc
+        # also tend to overlap with other systems
+        df = df[~df['system'].str.contains('drt_class')]
+
         #-------- remove duplicates
         df['group_id'] = df.groupby('system').ngroup()
         not_singletons = df.groupby('group_id').filter(lambda x: len(x)>1)['group_id'].unique() # group_id with occurence > 1
