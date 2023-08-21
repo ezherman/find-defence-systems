@@ -127,10 +127,10 @@ def generalise_system_names(row, software):
             # generalise the padloc naming by removing the numerical suffix
             system = re.sub('([a-z]+-[a-z])[0-9]', '\\1', system)
 
-            # dsr systems miss the '_' separator
-            if 'dsr' in system and '_' not in system:
-                system = '_'.join(['dsr', system.split('dsr')[-1]])
-    
+        # dsr systems miss the '_' separator
+        if 'dsr' in system and '_' not in system:
+            system = '_'.join(['dsr', system.split('dsr')[-1]])
+
     # remove type from name
     if 'cas_' not in system:
         system = re.sub('_type', '', system)
