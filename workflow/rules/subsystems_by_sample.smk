@@ -94,6 +94,27 @@ rule subsystems_by_sample:
         # remove the _other systems which are subsets of non _other systems
         df = df.loc[~df.index.isin(sys_indices_to_remove)].drop('locus_tags_set', axis = 1)
 
+        # -------- remove cases where a family annotation falls within a type annotation
+        # e.g. hachiman vs hachiman_i, only if the hachiman locus_tags fall within those of hachiman_i
+
+        # find hits with systems not defined at type level, for which a type level annotation does exist
+        systems_to_check = {s for s in df.system if any(df.system.str.contains(s + "_"))}
+
+        for system in systems_to_check:
+            # find locus tags associated with the systems defined at type level
+            # system + '_' indicates there's a type definition
+            systems_with_type = df["system"][df.system.str.contains(system + "_")].to_list()
+            locus_tag_sets = df["locus_tags"].str.split(";").apply(set)
+            locus_tag_sets_with_type = locus_tag_sets[
+                df["system"].isin(systems_with_type)
+            ].to_list()
+
+            for index in df[df["system"] == system].index:
+                locus_tag_set = set(df.loc[index]["locus_tags"].split(";"))
+
+                if any([locus_tag_set <= ltags for ltags in locus_tag_sets_with_type]):
+                    df = df.drop(index)
+
         #-------- export
         df.to_csv(output.csv, index = False)
 
