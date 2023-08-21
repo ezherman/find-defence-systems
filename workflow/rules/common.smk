@@ -92,6 +92,14 @@ def generalise_system_names(row, software):
         if 'cas_' in system:
             # remove class from name
             system = re.sub('class[0-9]+-subtype-', 'subtype_', system)
+        
+        else:
+            # remove type from name
+            system = re.sub('_type', '', system)
+
+            # zorya name misses and underscore
+            if 'zorya' in system:
+                system = '_'.join(['zorya', system.split('zorya')[-1]])
     
     elif software == 'padloc':
 
