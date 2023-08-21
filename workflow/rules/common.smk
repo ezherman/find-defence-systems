@@ -117,6 +117,11 @@ def generalise_system_names(row, software):
     # remove type from name
     if 'cas_' not in system:
         system = re.sub('_type', '', system)
+    
+    # if numbering is integer, convert to roman
+    if system.split('_')[-1].isdigit():
+        roman_numeral = roman.toRoman(int(system.split('_')[-1])).lower()
+        system = '_'.join(system.split('_')[0:-1]) + '_' + roman_numeral
 
     return system
 
