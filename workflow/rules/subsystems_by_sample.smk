@@ -35,12 +35,16 @@ rule subsystems_by_sample:
             # merge dataframes, still running this because the function
             # also resets the index
             df = merge_subsystem_tables(defense_finder)
-        
 
         # -------- remove drt_class_* systems
         # these are broadly defined system classes specific to padloc
         # also tend to overlap with other systems
         df = df[~df["system"].str.contains("drt_class")]
+
+        # -------- remove *_other systems 
+        # these systems help in identifying systems across contigs, as only two defence genes 
+        # have to be present and co-localised. exclude these.
+        df = df.loc[~df['system'].str.endswith('_other')]
 
         # -------- remove duplicates
         df["group_id"] = df.groupby("system").ngroup()
@@ -82,29 +86,6 @@ rule subsystems_by_sample:
 
         # exclude the entries which form a subset of another entry with the same system designation
         df = df.loc[~df.index.isin(idx_to_exclude)].drop("group_id", axis=1)
-
-        # -------- remove *_other systems where their locus tags have a more informative system annotation
-
-        # turn locus tag strings into sets
-        df["locus_tags_set"] = df["locus_tags"].str.split(";").apply(set)
-
-        # separate data into _other systems and non _other
-        df_other = df[["_other" in s for s in df["system"]]]
-        df_non_other = df[[i not in df_other.index for i in df.index]]
-
-        sys_indices_to_remove = []
-
-        for i in df_other.index:
-            one_other_system = df_other.loc[i]["locus_tags_set"]
-
-            # check whether one_other_system is a subset of any non _other system
-            subsets = [one_other_system <= ltags for ltags in df_non_other["locus_tags_set"]]
-
-            if any(subsets):
-                sys_indices_to_remove.append(i)
-
-        # remove the _other systems which are subsets of non _other systems
-        df = df.loc[~df.index.isin(sys_indices_to_remove)].drop("locus_tags_set", axis=1)
 
         # -------- remove cases where a family annotation falls within a type annotation
         # e.g. hachiman vs hachiman_i, only if the hachiman locus_tags fall within those of hachiman_i
