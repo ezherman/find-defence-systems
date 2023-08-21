@@ -93,13 +93,10 @@ def generalise_system_names(row, software):
             # remove class from name
             system = re.sub('class[0-9]+-subtype-', 'subtype_', system)
         
-        else:
-            # remove type from name
-            system = re.sub('_type', '', system)
 
-            # zorya name misses and underscore
-            if 'zorya' in system:
-                system = '_'.join(['zorya', system.split('zorya')[-1]])
+        # zorya name misses and underscore, e.g. zorya_typei instead of zorya_type_i
+        if 'zorya' in system:
+            system = '_'.join(['zorya_type', system.split('zorya_type')[-1]])
     
     elif software == 'padloc':
 
@@ -116,6 +113,10 @@ def generalise_system_names(row, software):
             # the defensefinder definitions aren't as granular
             # generalise the padloc naming by removing the numerical suffix
             system = re.sub('([a-z]+-[a-z])[0-9]', '\\1', system)
+    
+    # remove type from name
+    if 'cas_' not in system:
+        system = re.sub('_type', '', system)
 
     return system
 
