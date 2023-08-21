@@ -95,9 +95,11 @@ def generalise_system_names(row, software):
             system = re.sub('class[0-9]+-subtype-', 'subtype_', system)
         
 
-        # zorya name misses an underscore, e.g. zorya_typei instead of zorya_type_i
+        # zorya and mokosh names miss an underscore, e.g. zorya_typei instead of zorya_type_i
         if 'zorya' in system:
             system = '_'.join(['zorya_type', system.split('zorya_type')[-1]])
+        if 'mokosh' in system:
+            system = '_'.join(['mokosh_type', system.split('mokosh_type')[-1]])
         
         # old is called old_exonuclease here and simply old in padloc
         if system == 'old_exonuclease':
