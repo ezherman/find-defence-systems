@@ -23,6 +23,7 @@ import os
 import glob
 import gzip, shutil
 import gffutils
+import roman
 import wget #installed with pip
 from Bio import Entrez, SeqIO
 
@@ -92,6 +93,23 @@ def generalise_system_names(row, software):
         if 'cas_' in system:
             # remove class from name
             system = re.sub('class[0-9]+-subtype-', 'subtype_', system)
+        
+
+        # zorya name misses an underscore, e.g. zorya_typei instead of zorya_type_i
+        if 'zorya' in system:
+            system = '_'.join(['zorya_type', system.split('zorya_type')[-1]])
+        
+        # old is called old_exonuclease here and simply old in padloc
+        if system == 'old_exonuclease':
+            system = 'old'
+        
+        # retron subsystems are delimited with '_', e.g. retron_i_b
+        # in padloc they're delimited with '-', e.g. retron_i-b
+        # set defensefinder to padloc naming
+        if 'retron' in system:
+            system_split = system.split('_') 
+            subtype = system_split[-1] 
+            system = '_'.join(system_split[0:-1]) + '-' + subtype
     
     elif software == 'padloc':
 
@@ -108,6 +126,20 @@ def generalise_system_names(row, software):
             # the defensefinder definitions aren't as granular
             # generalise the padloc naming by removing the numerical suffix
             system = re.sub('([a-z]+-[a-z])[0-9]', '\\1', system)
+
+        # dsr systems miss the '_' separator
+        if 'dsr' in system and '_' not in system:
+            system = '_'.join(['dsr', system.split('dsr')[-1]])
+
+    # remove type from name, except for cas where definitions
+    # need to be distinguished as type or subtype
+    if 'cas_' not in system:
+        system = re.sub('_type', '', system)
+    
+    # if numbering is integer, convert to roman, e.g. dsr_1 -> dsr_i
+    if system.split('_')[-1].isdigit():
+        roman_numeral = roman.toRoman(int(system.split('_')[-1])).lower()
+        system = '_'.join(system.split('_')[0:-1]) + '_' + roman_numeral
 
     return system
 
