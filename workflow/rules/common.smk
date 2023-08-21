@@ -98,6 +98,10 @@ def generalise_system_names(row, software):
         # zorya name misses and underscore, e.g. zorya_typei instead of zorya_type_i
         if 'zorya' in system:
             system = '_'.join(['zorya_type', system.split('zorya_type')[-1]])
+        
+        # old is called old_exonuclease here and simply old in padloc
+        if system == 'old_exonuclease':
+            system = 'old'
     
     elif software == 'padloc':
 
