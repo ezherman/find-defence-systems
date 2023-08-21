@@ -102,6 +102,14 @@ def generalise_system_names(row, software):
         # old is called old_exonuclease here and simply old in padloc
         if system == 'old_exonuclease':
             system = 'old'
+        
+        # retron subsystems are delimited with '_', e.g. retron_i_b
+        # in padloc they're delimited with '-', e.g. retron_i-b
+        # set defensefinder to padloc naming
+        if 'retron' in system:
+            system_split = system.split('_') 
+            subtype = system_split[-1] 
+            system = '_'.join(system_split[0:-1]) + '-' + subtype
     
     elif software == 'padloc':
 
