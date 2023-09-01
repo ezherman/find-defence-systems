@@ -137,6 +137,10 @@ def generalise_system_names(row, software):
         if 'dsr' in system and '_' not in system:
             system = '_'.join(['dsr', system.split('dsr')[-1]])
 
+        # argonaute is called pAgo in defense finder
+        if 'argonaute' in system:
+            system = re.sub('argonaute', 'pago', system)
+
     # remove type from name, except for cas where definitions
     # need to be distinguished as type or subtype
     if 'cas_' not in system:
