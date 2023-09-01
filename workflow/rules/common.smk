@@ -27,6 +27,10 @@ import roman
 import wget #installed with pip
 from Bio import Entrez, SeqIO
 
+# set Entrez email and API key
+Entrez.api_key = config['entrez_api_key']
+Entrez.email = config['entrez_email']
+
 ## functions and class to download sequence files
 
 # class to create combinations of data type and file extension

@@ -9,3 +9,6 @@ assembly_glob: "data/protein_sequences/{assembly}.faa"
 # directory into which the padloc database will be downloaded
 padloc_db_dir: resources/padloc_db
 
+# API key and email for Entrez, to be filled in by the user
+entrez_api_key: 12345
+entrz_email: email@email.com
