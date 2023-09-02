@@ -9,7 +9,7 @@ rule obtain_defense_finder_locus_tags:
     run:
         # first check if annotation was performed with Bakta
         # if so, the target.name column is already the locus tag
-        with gzip.open('pao1.gbff.gz', "r") as f:
+        with gzip.open(input.gbff_gz, "r") as f:
             lines = f.readlines()
             bakta_true = "Bakta" in str(lines[8])
 
