@@ -17,9 +17,9 @@ rule obtain_padloc_locus_tags:
 
             # first check if annotation was performed with Bakta
             # if so, the target.name column is already the locus tag
-            with gzip.open("pao1.gff.gz", "r") as f:
-                bakta = f.readlines()
-                bakta_true = "Bakta" in str(bakta[2])
+            with gzip.open(input.gff_gz, "r") as f:
+                lines = f.readlines()
+                bakta_true = "Bakta" in str(lines[2])
 
             if bakta_true:
                 hits["locus_tag"] = hits["target.name"]
