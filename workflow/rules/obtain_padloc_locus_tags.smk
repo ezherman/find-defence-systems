@@ -24,6 +24,7 @@ rule obtain_padloc_locus_tags:
             if bakta_true:
                 hits["locus_tag"] = hits["target.name"]
                 hits.to_csv(output.hits, index=False)
+                shell('touch {output.gff_db}') #snakemake requires this file to complete the job 
 
             # if not bakta (i.e. refseq), link target name to locus tag using the gff file
             else:

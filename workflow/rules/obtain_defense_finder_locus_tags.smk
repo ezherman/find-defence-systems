@@ -17,6 +17,7 @@ rule obtain_defense_finder_locus_tags:
             hits = pd.read_table(input.defense_finder)
             hits['locus_tag'] = hits['hit_id']
             hits.to_csv(output.hits, index = False)
+            shell('touch {output.single_line_faa}') #snakemake requires this file to complete the job 
         
         else:
         
