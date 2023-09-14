@@ -44,8 +44,8 @@ rule obtain_padloc_locus_tags:
 
                 # create database from gff file
                 gff_db = gffutils.create_db(
-                    "pao1.gff.gz",
-                    "pao1.db",
+                    input.gff_gz,
+                    output.gff_db,
                     merge_strategy="create_unique",
                     force=True,
                 )
