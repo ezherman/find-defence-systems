@@ -5,5 +5,5 @@ rule update_defense_finder_models:
     conda: "../envs/defensefinder.yaml"
     shell:
         r"""mkdir -p {output}
-            macsydata install -U --org  mdmparis -f defense-finder-models
+            macsydata install -U --org  mdmparis -f defense-finder-models --models-dir {output}
         """
