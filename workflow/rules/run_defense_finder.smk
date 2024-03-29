@@ -9,10 +9,11 @@ rule run_defense_finder:
         data = "data/protein_seq/{sample}.faa.gz",
         models = os.path.expanduser('~') + "/.macsyfinder/data"
     conda: "../envs/defensefinder.yaml"
-    params: outdir_prefix = "results/intermediate/defense_finder/defense_finder"
     threads: 8
     shell:
-        r"""rm -rf {params.outdir_prefix}_{wildcards.sample} #if the outdir exists, remove it
+        r"""outdir=$(dirname {output.systems})
+            rm -rf $outdir #if the outdir exists, remove it
             gunzip -c {input.data} > {output.faa}
-            defense-finder run {output.faa} --out-dir {params.outdir_prefix}_{wildcards.sample} -w {threads}
+            defense-finder run {output.faa} --out-dir $outdir -w {threads}
+            rename "{wildcards.sample}_" "" $outdir/* #defense finder update introduced sample in the filenames
          """
