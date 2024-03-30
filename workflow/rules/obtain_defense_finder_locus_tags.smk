@@ -21,8 +21,8 @@ rule obtain_defense_finder_locus_tags:
             # check if annotation was performed with Bakta
             # if so, the target.name column is already the locus tag
             with gzip.open(input.gbff_gz, "r") as f:
-            lines = f.readlines()
-            bakta_true = "Bakta" in str(lines[8])
+                lines = f.readlines()
+                bakta_true = "Bakta" in str(lines[8])
 
             if bakta_true:
                 hits['locus_tag'] = hits['hit_id']
