@@ -7,8 +7,8 @@ rule rename_defense_finder_systems:
         dfinder = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_genes_ltags.csv",
     run:
         #-------- if defense finder did not find hits, create empty output files
-        dfinder = pd.read_table(input.dfinder)
-        if len(hits) == 0:
+        dfinder = pd.read_table(input.dinder)
+        if len(dfinder) == 0:
             dfinder['system'] = []
             dfinder['sys_id'] = []
             dfinder.to_csv(output.hits, index = False)
