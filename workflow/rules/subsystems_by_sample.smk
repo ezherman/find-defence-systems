@@ -8,33 +8,27 @@ rule subsystems_by_sample:
         dfinder = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_genes_ltags_renamed.csv",
         padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc_ltags_renamed.csv"
     run:
+        #-------- import and check whether dfinder/padloc have hits
+        dfinder = pd.read_table(input.dfinder)
+        dfinder_has_hits = len(dfinder) > 0
 
-        #-------- merging and reindexing 
+        padloc = pd.read_table(input.padloc)
+        padloc_has_hits = len(padloc) > 0
 
-        # if padloc found hits
-        if os.stat(input.padloc).st_size > 0:
+        #-------- wrangle, merge and reindex
 
-            # import dataframes
-            padloc = pd.read_csv(input.padloc)
-            defense_finder = pd.read_csv(input.dfinder)
-
-            # wrangle dataframes
+        if dfinder_has_hits and not padloc_has_hits:
+            dfinder = create_subsystem_table(dfinder, "defense_finder")
+            df = merge_subsystem_tables(df_defense_finder = dfinder)
+        
+        if padloc_has_hits and not dfinder_has_hits: 
             padloc = create_subsystem_table(padloc, "padloc")
-            defense_finder = create_subsystem_table(defense_finder, "defense_finder")
-
-            # merge dataframes
-            df = merge_subsystem_tables(defense_finder, padloc)
-
-        # if padloc did not find hits
-        if os.stat(input.padloc).st_size == 0:
-
-            # import and wrangle
-            defense_finder = pd.read_csv(input.dfinder)
-            defense_finder = create_subsystem_table(defense_finder, "defense_finder")
-
-            # merge dataframes, still running this because the function
-            # also resets the index
-            df = merge_subsystem_tables(defense_finder)
+            df = merge_subsystem_tables(df_padloc = padloc)
+        
+        if dfinder_has_hits and padloc_has_hits:
+            dfinder = create_subsystem_table(dfinder, "defense_finder")
+            padloc = create_subsystem_table(padloc, "padloc")
+            df = merge_subsystem_tables(df_defense_finder = dfinder, df_padloc = padloc)
 
         # -------- remove drt_class_* systems
         # these are broadly defined system classes specific to padloc
