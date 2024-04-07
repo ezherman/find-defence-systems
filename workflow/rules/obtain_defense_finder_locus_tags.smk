@@ -9,14 +9,14 @@ rule obtain_defense_finder_locus_tags:
     run:
         # check if defensefinder found any hits
         # if not, an empty spreadsheet can be returned
-        if os.stat(input.defense_finder).st_size == 0:
-            shell('cp {input.defense_finder} {output.hits}')
-            shell('touch {output.single_line_faa}') 
+        hits = pd.read_table(input.defense_finder)
+        if len(hits) == 0:
+            hits['locus_tag'] = []
+            hits.to_csv(output.hits, index = False)
+            shell('touch {output.single_line_faa}') #snakemake requires this file to complete the job
             
 
         else:
-            hits = pd.read_table(input.defense_finder)
-
             # check if annotation was performed with Bakta
             # if so, the target.name column is already the locus tag
             with gzip.open(input.gbff_gz, "r") as f:

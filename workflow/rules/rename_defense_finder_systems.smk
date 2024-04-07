@@ -7,13 +7,13 @@ rule rename_defense_finder_systems:
         dfinder = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_genes_ltags.csv",
     run:
         #-------- if defense finder did not find hits, create empty output files
-        if os.stat(input.dfinder).st_size == 0:
-            shell('cp {input.dfinder} {output.dfinder}')
+        dfinder = pd.read_table(input.defense_finder)
+        if len(hits) == 0:
+            dfinder['system'] = []
+            dfinder['sys_id'] = []
+            dfinder.to_csv(output.hits, index = False)
 
-        else:
-            #-------- import data
-            dfinder = pd.read_csv(input.dfinder)
-    
+        else:   
             #-------- wrangle data, then rename the systems
             # system name is sys_id with the UserReplicon_ prefix and numerical suffix (e.g. _1) removed
             # the suffix increases (to e.g. _2) when multiple instances of the same system are found
