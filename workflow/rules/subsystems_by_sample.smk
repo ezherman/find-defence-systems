@@ -14,7 +14,7 @@ rule subsystems_by_sample:
         dfinder_has_hits = len(dfinder) > 0
 
         padloc = pd.read_csv(input.padloc)
-        padloc_has_hits = len(dfinder) > 0
+        padloc_has_hits = len(padloc) > 0
 
         if not dfinder_has_hits and not padloc_has_hits:
             shell("cp {input.subsystem_header} {output.csv}") #return empty file
