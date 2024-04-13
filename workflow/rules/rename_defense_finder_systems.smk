@@ -11,7 +11,7 @@ rule rename_defense_finder_systems:
         if len(dfinder) == 0:
             dfinder['system'] = []
             dfinder['sys_id'] = []
-            dfinder.to_csv(output.hits, index = False)
+            dfinder.to_csv(output.dfinder, index = False)
 
         else:   
             #-------- wrangle data, then rename the systems
