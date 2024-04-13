@@ -6,17 +6,18 @@ rule subsystems_by_sample:
         csv = "results/intermediate/subsystems_by_assembly/subsystems_{sample}.csv"
     input:
         dfinder = "results/intermediate/defense_finder/defense_finder_{sample}/defense_finder_genes_ltags_renamed.csv",
-        padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc_ltags_renamed.csv"
+        padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc_ltags_renamed.csv",
+        subsystem_header = "resources/table_headers/subsystems.csv"
     run:
         #-------- import and check whether dfinder/padloc have hits
-        dfinder = pd.read_table(input.dfinder)
+        dfinder = pd.read_csv(input.dfinder)
         dfinder_has_hits = len(dfinder) > 0
 
-        padloc = pd.read_table(input.padloc)
-        padloc_has_hits = len(padloc) > 0
+        padloc = pd.read_csv(input.padloc)
+        padloc_has_hits = len(dfinder) > 0
 
         if not dfinder_has_hits and not padloc_has_hits:
-            dfinder.to_csv(output.csv, index = False) #return empty table
+            shell("cp {input.subsystem_header} {output.csv}") #return empty file
         
         else:
 

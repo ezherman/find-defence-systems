@@ -7,15 +7,16 @@ rule run_padloc:
     input:
         faa_gz  = "data/protein_seq/{sample}.faa.gz",
         gff_gz  = "data/annotation/{sample}.gff.gz",
-        hmm = PADLOC_DB_DIR + "/hmm"
+        hmm = PADLOC_DB_DIR + "/hmm",
+        padloc_header = "resources/table_headers/padloc.csv"
     conda: "../envs/padloc.yaml"
     threads: 8
     params: 
         pdd             = PADLOC_DB_DIR,
         outdir_prefix   = "results/intermediate/padloc/padloc"
     shell:
-        r"""touch {output.csv} #empty output file in case padloc finds no results
-                               #otherwise snakemake exits due to lack of output file
+        r"""cp {input.padloc_header} {output.csv} #empty output file in case padloc finds no results
+                                                  #otherwise snakemake exits due to lack of output file
             gunzip -c {input.faa_gz} > {output.faa}
             gunzip -c {input.gff_gz} > {output.gff}
             padloc --force --data {params.pdd} --faa {output.faa} --gff {output.gff} --outdir {params.outdir_prefix}_{wildcards.sample} --cpu {threads}

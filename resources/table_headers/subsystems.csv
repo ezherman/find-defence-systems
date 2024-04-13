@@ -1,0 +1,8 @@
+program,system,protein_names,protein_IDs
+padloc,rm_type_i,REase_I;MTase_I;Specificity_I,WP_000438167.1;WP_000627719.1;WP_001680721.1
+padloc,rm_type_i,REase_I;MTase_I;Specificity_I,WP_000819015.1;WP_001341289.1;WP_000110079.1
+padloc,rm_type_ii,MTase_II;REase_II,WP_001157256.1;WP_000228683.1
+padloc,cas_subtype_i-e,Cas3e;Cas8e;Cas11e;Cas7e;Cas5e;Cas6e;Cas1e;Cas2e,WP_001233933.1;WP_001084096.1;WP_000029341.1;WP_000206431.1;WP_000085039.1;WP_000281445.1;WP_000144863.1;WP_000063176.1
+padloc,dxtpase,dGTPase,WP_000271619.1
+defense_finder,pd-t7-4,PD-T7-4__PD-T7-4,WP_000852869.1
+defense_finder,rm_type_iv,RM_Type_IV__Type_IV_REases,WP_001037966.1
