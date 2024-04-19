@@ -7,7 +7,8 @@ rule rename_padloc_systems:
         padloc  = "results/intermediate/padloc/padloc_{sample}/{sample}_padloc_ltags.csv"
     run:
         #-------- if padloc did not find hits, create empty output files
-        if os.stat(input.padloc).st_size == 0:
+        padloc = pd.read_csv(input.padloc)
+        if len(padloc) == 0:
             shell('cp {input.padloc} {output.padloc}')
 
         else:        
