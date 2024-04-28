@@ -24,7 +24,6 @@ import glob
 import gzip, shutil
 import gffutils
 import roman
-import re
 import wget #installed with pip
 from Bio import Entrez, SeqIO
 

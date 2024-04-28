@@ -6,7 +6,6 @@ channels:
 dependencies:
   - hmmer
   - pip
-  - rename
   - pip:
       - mdmparis-defense-finder
 prefix: /home/elh605/mambaforge/envs/defensefinder
