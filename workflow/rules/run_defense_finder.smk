@@ -15,5 +15,5 @@ rule run_defense_finder:
             rm -rf $outdir #if the outdir exists, remove it
             gunzip -c {input.data} > {output.faa}
             defense-finder run {output.faa} --out-dir $outdir -w {threads}
-            rename "{wildcards.sample}_" "" $outdir/* #defense finder update introduced sample in the filenames
+            rename 's#{wildcards.sample}_##' $outdir/* #defense finder update introduced sample in the filenames
          """
