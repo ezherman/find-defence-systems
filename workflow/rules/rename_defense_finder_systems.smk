@@ -17,14 +17,14 @@ rule rename_defense_finder_systems:
             #-------- wrangle data, then rename the systems
 
             # remove the GCF_ or GCA_ prefix and the numerical suffix from the sys_id
-            # patch for defense finder bug: https://github.com/mdmparis/defense-finder/issues/61
+            # Reported as a potential bug: https://github.com/mdmparis/defense-finder/issues/61
             pattern = r'(GCF_|GCA_)\d+\.\d+_'
             dfinder['sys_id'] = dfinder['sys_id'].apply(lambda x: re.sub(pattern, '', x))
 
-            # system name is sys_id with the UserReplicon_ prefix and numerical suffix (e.g. _1) removed
+            # system name is sys_id with the numerical suffix (e.g. _1) removed
             # the suffix increases (to e.g. _2) when multiple instances of the same system are found
             # within an isolate
-            dfinder['system'] = ['_'.join(d.split('_')[1:-1]) for d in dfinder['sys_id']]
+            dfinder['system'] = ['_'.join(d.split('_')[:-1]) for d in dfinder['sys_id']]
             dfinder['sys_id'] = dfinder.groupby(['sys_id']).ngroup() # simple numerical ID
     
             # rename the systems
