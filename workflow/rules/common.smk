@@ -114,6 +114,10 @@ def generalise_system_names(row, software):
         if system == 'rst_helicaseduf2290':
             system = 'helicase-duf2290'
         
+        # rename jukab to juk, the naming in padloc
+        if system == 'jukab':
+            system = 'juk'
+
         # "gao" prefix is superfluous
         if 'gao' in system:
             system = system.split('gao_')[-1]
