@@ -110,9 +110,17 @@ def generalise_system_names(row, software):
         if system == 'old_exonuclease':
             system = 'old'
         
+        # rename Rst_HelicaseDUF2290 to Helicase-DUF2290, the naming in padloc
+        if system == 'rst_helicaseduf2290':
+            system = 'helicase-duf2290'
+        
         # "gao" prefix is superfluous
         if 'Gao' in system:
             system = system.split('Gao_')[-1]
+        
+        # "Rst" prefix is superfluous
+        if 'Rst' in system:
+            system = system.split('Rst_')[-1]
         
         # retron subsystems are delimited with '_', e.g. retron_i_b
         # in padloc they're delimited with '-', e.g. retron_i-b
