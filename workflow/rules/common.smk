@@ -110,6 +110,10 @@ def generalise_system_names(row, software):
         if system == 'old_exonuclease':
             system = 'old'
         
+        # "gao" prefix is superfluous
+        if 'Gao' in system:
+            system = system.split('Gao_')[-1]
+        
         # retron subsystems are delimited with '_', e.g. retron_i_b
         # in padloc they're delimited with '-', e.g. retron_i-b
         # set defensefinder to padloc naming
