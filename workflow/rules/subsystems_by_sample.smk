@@ -46,6 +46,11 @@ rule subsystems_by_sample:
             # have to be present and co-localised. exclude these.
             df = df.loc[~df['system'].str.endswith('_other')]
 
+            # -------- remove pdc_* systems
+            # these are novel candidate systems without empirical validation
+            # https://www.biorxiv.org/content/10.1101/2024.01.29.577857v1
+            df = df[~df["system"].str.contains("pdc")]
+
             # -------- remove duplicates
             df["group_id"] = df.groupby("system").ngroup()
             not_singletons = (
