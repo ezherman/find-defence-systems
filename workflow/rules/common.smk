@@ -133,6 +133,12 @@ def generalise_system_names(row, software):
         if 'lamassu' in system:
             sys, subsys = system.split('-')
             system = sys + '_' + re.sub('-', '_', subsys)
+        
+        # zorya and mokosh II miss an underscore, e.g. zorya_typei instead of zorya_type_i
+        if 'zorya' in system:
+            system = '_'.join(['zorya_type', system.split('zorya_type_')[-1]])
+        if system == 'mokosh_typeii':
+            system = 'mokosh_type_ii'
 
     
     elif software == 'padloc':
@@ -154,12 +160,6 @@ def generalise_system_names(row, software):
         # dsr systems miss the '_' separator
         if 'dsr' in system and '_' not in system:
             system = '_'.join(['dsr', system.split('dsr')[-1]])
-        
-        # zorya and mokosh names miss an underscore, e.g. zorya_typei instead of zorya_type_i
-        if 'zorya' in system:
-            system = '_'.join(['zorya_type', system.split('zorya_type_')[-1]])
-        if 'mokosh' in system:
-            system = '_'.join(['mokosh_type', system.split('mokosh_type_')[-1]])
 
         # argonaute is called pAgo in defense finder
         if 'argonaute' in system:
