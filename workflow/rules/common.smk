@@ -99,13 +99,6 @@ def generalise_system_names(row, software):
             # remove class from name
             system = re.sub('class[0-9]+-subtype-', 'subtype_', system)
         
-
-        # zorya and mokosh names miss an underscore, e.g. zorya_typei instead of zorya_type_i
-        if 'zorya' in system:
-            system = '_'.join(['zorya_type', system.split('zorya_type')[-1]])
-        if 'mokosh' in system:
-            system = '_'.join(['mokosh_type', system.split('mokosh_type')[-1]])
-        
         # old is called old_exonuclease here and simply old in padloc
         if system == 'old_exonuclease':
             system = 'old'
@@ -153,6 +146,12 @@ def generalise_system_names(row, software):
         # dsr systems miss the '_' separator
         if 'dsr' in system and '_' not in system:
             system = '_'.join(['dsr', system.split('dsr')[-1]])
+        
+        # zorya and mokosh names miss an underscore, e.g. zorya_typei instead of zorya_type_i
+        if 'zorya' in system:
+            system = '_'.join(['zorya_type', system.split('zorya_type')[-1]])
+        if 'mokosh' in system:
+            system = '_'.join(['mokosh_type', system.split('mokosh_type')[-1]])
 
         # argonaute is called pAgo in defense finder
         if 'argonaute' in system:
