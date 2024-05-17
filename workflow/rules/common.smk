@@ -168,6 +168,19 @@ def generalise_system_names(row, software):
         # AVAST has been renamed to avs
         if 'avast' in system:
             system = re.sub('avast', 'avs', system)
+        
+        # gao_19 is equivalent to her_sir in defensefinder
+        # padloc: https://github.com/padlocbio/padloc-db/blob/7f99b47b75e232b111c18626badb9ac32e8e0b5a/sys/GAO_19.yaml#L4
+        # defense finder: https://github.com/mdmparis/defense-finder-models/blob/30f0d443b0b9a957761fb636cdd2e9972d1e6d5c/DefenseFinder_rules.tsv#L128
+        if system == 'gao_19':
+            system = 'her_sir'
+            
+        # gao_20 is equivalent to her_duf in defensefinder
+        # padloc: https://github.com/padlocbio/padloc-db/blob/7f99b47b75e232b111c18626badb9ac32e8e0b5a/sys/GAO_20.yaml#L4
+        # defense finder: https://github.com/mdmparis/defense-finder-models/blob/30f0d443b0b9a957761fb636cdd2e9972d1e6d5c/DefenseFinder_rules.tsv#L127
+        if system == 'gao_20':
+            system = 'her_duf'
+
 
     # remove type from name, except for cas where definitions
     # need to be distinguished as type or subtype
