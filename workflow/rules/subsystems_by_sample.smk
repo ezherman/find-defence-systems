@@ -51,6 +51,13 @@ rule subsystems_by_sample:
             # https://www.biorxiv.org/content/10.1101/2024.01.29.577857v1
             df = df[~df["system"].str.contains("pdc")]
 
+            # -------- remove mokosh_i systems
+            # padloc identifies mokosh_i, while defensefinder identifies
+            # more granular mokosh_i_a, ..., mokosh_i_e
+            # if a future update of padloc introduces mokosh_i subtypes,
+            # this command will not remove them
+            df = df[df["system"] != "mokosh_i"]
+
             # -------- remove duplicates
             df["group_id"] = df.groupby("system").ngroup()
             not_singletons = (
