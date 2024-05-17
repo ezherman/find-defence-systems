@@ -132,7 +132,7 @@ def generalise_system_names(row, software):
         # the system as lamassu and the subtype as cap4-nuclease
         if 'lamassu' in system:
             sys, subsys = system.split('-')
-            system = sys + '_' + re.sub*('-', '_', subsys)
+            system = sys + '_' + re.sub('-', '_', subsys)
 
     
     elif software == 'padloc':
