@@ -58,6 +58,11 @@ rule subsystems_by_sample:
             # this command will not remove them
             df = df[df["system"] != "mokosh_i"]
 
+            # -------- remove vspr 
+            # padloc identifies vspr, however this is not a defence system
+            # see https://github.com/padlocbio/padloc-db/blob/7f99b47b75e232b111c18626badb9ac32e8e0b5a/sys_meta.txt#L183
+            df = df[df["system"] != "vspr"]
+
             # -------- remove duplicates
             df["group_id"] = df.groupby("system").ngroup()
             not_singletons = (
