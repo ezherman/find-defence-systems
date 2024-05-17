@@ -126,6 +126,14 @@ def generalise_system_names(row, software):
             system_split = system.split('_') 
             subtype = system_split[-1] 
             system = '_'.join(system_split[0:-1]) + '-' + subtype
+        
+        # systems are named as e.g. lamassu-cap4_nuclease
+        # rename to lamassu_cap4-nuclease so that doenstream recognises
+        # the system as lamassu and the subtype as cap4-nuclease
+        if 'lamassu' in system:
+            sys, subsys = system.split('-')
+            system = sys + '_' + re.sub*('-', '_', subsys)
+
     
     elif software == 'padloc':
 
