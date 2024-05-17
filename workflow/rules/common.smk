@@ -156,6 +156,10 @@ def generalise_system_names(row, software):
         # argonaute is called pAgo in defense finder
         if 'argonaute' in system:
             system = re.sub('argonaute', 'pago', system)
+        
+        # AVAST has been renamed to avs
+        if 'avast' in system:
+            system = re.sub('avast', 'avs', system)
 
     # remove type from name, except for cas where definitions
     # need to be distinguished as type or subtype
